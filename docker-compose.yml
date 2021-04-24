@@ -1,0 +1,7 @@
+version: '3'
+services:
+  mongo:
+    container_name: jotjik_db
+    image: 'mongo:latest'
+    ports:
+      - "7000:27017"

@@ -1,0 +1,4 @@
+.time-interval + .time-interval::before {
+  content: ':';
+  margin: 0 8px;
+}
