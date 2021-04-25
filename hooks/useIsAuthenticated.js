@@ -9,7 +9,7 @@ const useIsAuthenticated = () => {
     if (session?.user?.id) {
       setIsAuthenticated(true);
     }
-  }, [session])
+  }, [session]);
 
   return isAuthenticated;
 };

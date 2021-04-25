@@ -35,10 +35,10 @@ const Timer = () => {
         localStorage.getItem('queuedSessions') ?? JSON.stringify([])
       );
       localStorage.setItem('queuedSessions', JSON.stringify([...queuedSessions, payload]));
-      // TODO: add custom signin page to route user to if not authenticated
-      router.push('/api/auth/signin');
+      router.push('/auth/signin');
     } else {
       postNewSession(session.user.id, { startedAt: startTime, duration: elapsedTime });
+      router.push('/stats');
     }
     handleReset();
   };
