@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { signIn, signOut, useSession } from 'next-auth/client';
+import { signOut, useSession } from 'next-auth/client';
 
 import useStore from '../hooks/useStore';
 
+import GoogleSignInButton from '../components/Buttons/GoogleSignInButton';
 import RecordList from '../components/RecordList';
 
 export default function Stats() {
@@ -10,8 +11,10 @@ export default function Stats() {
   const getSessions = useStore((state) => state.getSessions);
 
   useEffect(() => {
-    // getSessions();
-  }, [getSessions]);
+    if (session) {
+      getSessions(session.user.id);
+    }
+  }, [session, getSessions]);
 
   // When rendering client side don't display anything until loading is complete
   if (typeof window !== 'undefined' && loading) {
@@ -20,10 +23,10 @@ export default function Stats() {
 
   if (!session) {
     return (
-      <>
-        Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
-      </>
+      <section className="flex flex-col justify-center h-full">
+        <h1 className="mb-6 text-3xl font-bold">Log in to your account</h1>
+        <GoogleSignInButton redirectUrl={`${process.env.NEXT_PUBLIC_HOST_URL}/stats`} />
+      </section>
     );
   }
 

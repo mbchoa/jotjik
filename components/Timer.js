@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/client';
 
 import useStore from '../hooks/useStore';
 import useTimer from '../hooks/useTimer';
@@ -8,11 +10,12 @@ import PlayButton from './Buttons/Play';
 import PauseButton from './Buttons/Pause';
 import ResetButton from './Buttons/Reset';
 import SaveButton from './Buttons/Save';
-import SettingsButton from './Buttons/Settings';
 
 import styles from '../styles/Timer.module.css';
 
 const Timer = () => {
+  const router = useRouter();
+  const [session] = useSession();
   const { elapsedTime, isRunning, handleStart, handlePause, handleReset } = useTimer();
   const [startTime, setStartTime] = useState('');
   const postNewSession = useStore((state) => state.postNewSession);
@@ -25,7 +28,18 @@ const Timer = () => {
   };
 
   const handleSave = () => {
-    postNewSession({ startedAt: startTime, duration: elapsedTime });
+    const payload = { startedAt: startTime, duration: elapsedTime };
+
+    if (!session) {
+      const queuedSessions = JSON.parse(
+        localStorage.getItem('queuedSessions') ?? JSON.stringify([])
+      );
+      localStorage.setItem('queuedSessions', JSON.stringify([...queuedSessions, payload]));
+      // TODO: add custom signin page to route user to if not authenticated
+      router.push('/api/auth/signin');
+    } else {
+      postNewSession(session.user.id, { startedAt: startTime, duration: elapsedTime });
+    }
     handleReset();
   };
 
@@ -51,9 +65,6 @@ const Timer = () => {
         </li>
         <li className="flex items-center ml-4">
           <SaveButton disabled={elapsedTime === 0} onClick={handleSave} />
-        </li>
-        <li className="flex items-center ml-auto">
-          <SettingsButton />
         </li>
       </ul>
     </article>
