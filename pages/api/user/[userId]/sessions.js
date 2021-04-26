@@ -1,12 +1,10 @@
-import { connectToDatabase } from '../../../../util/mongodb';
+import { connectToDatabase } from '../../../../lib/mongodb';
 
 export default async function sessionsHandler(req, res) {
   const { db } = await connectToDatabase();
 
   switch (req.method) {
     case 'GET':
-      const { userId } = req.query;
-
       const userSessions = await db
         .collection('sessions')
         .find({ userId: req.query.userId })
@@ -19,13 +17,21 @@ export default async function sessionsHandler(req, res) {
     case 'POST':
       const { startedAt, duration } = req.body;
 
-      await db.collection('sessions').insertOne({
-        startedAt,
-        duration,
-        userId: req.query.userId,
-      });
+      try {
+        await db.collection('sessions').insertOne({
+          startedAt,
+          duration,
+          userId: req.query.userId,
+        });
+        res.json({ success: true });
+      } catch (err) {
+        console.error(err);
+        res.json({
+          success: false,
+          message: err.message,
+        });
+      }
 
-      res.json({ success: true });
       break;
   }
 }
