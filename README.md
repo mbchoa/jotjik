@@ -4,11 +4,18 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 First, spin up MongoDB container:
 
-```
+```bash
 docker-compose up
 ```
 
-Second, run the development server:
+Second, copy the `env.local.example` to a `.env.local` file and update the environment variables in there with your own Google OAuth API keys:
+
+```
+GOOGLE_ID=YOUR_KEY_HERE
+GOOGLE_SECRET=YOUR_KEY_HERE
+```
+
+Lastly, run the development server:
 
 ```bash
 npm run dev
