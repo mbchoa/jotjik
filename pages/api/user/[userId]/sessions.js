@@ -8,11 +8,12 @@ export default async function sessionsHandler(req, res) {
       const userSessions = await db
         .collection('sessions')
         .find({ userId: req.query.userId })
+        .sort({ startedAt: -1 })
         // omits the "userId" fields from each record
-        .project({ userId: 0 })
+        .project({ _id: 0, userId: 0 })
         .toArray();
 
-      res.json(userSessions.reverse());
+      res.json(userSessions);
       break;
     case 'POST':
       const { startedAt, duration } = req.body;

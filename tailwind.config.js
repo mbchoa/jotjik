@@ -6,6 +6,9 @@ module.exports = {
       gridTemplateRows: {
         hamburger: '48px auto 96px',
       },
+      transitionProperty: {
+        'max-height': 'max-height',
+      },
     },
   },
   variants: {},
