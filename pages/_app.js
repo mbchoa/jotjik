@@ -7,7 +7,18 @@ import Layout from '../components/Layout';
 import '../styles/globals.css';
 
 export default function MyApp({ Component, pageProps }) {
-  const store = useHydrate(pageProps.initialZustandState);
+  const useStore = useHydrate(pageProps.initialZustandState);
+  const postNewSession = useStore((state) => state.postNewSession);
+
+  // check local storage for sessions queue before authenticating if already authenticated
+  if (typeof window !== 'undefined' && pageProps.session) {
+    const queuedSessions = JSON.parse(localStorage.getItem('queuedSessions') ?? JSON.stringify([]));
+    queuedSessions.forEach((session) => {
+      postNewSession(pageProps.session.user.id, session);
+    });
+    localStorage.removeItem('queuedSessions');
+  }
+
   return (
     <Provider
       // Provider options are not required but can be useful in situations where
@@ -29,7 +40,7 @@ export default function MyApp({ Component, pageProps }) {
       }}
       session={pageProps.session}
     >
-      <StoreProvider store={store}>
+      <StoreProvider store={useStore}>
         <Layout>
           <Component {...pageProps} />
         </Layout>
