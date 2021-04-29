@@ -11,13 +11,13 @@ const Layout = ({ children }) => (
       <link rel="apple-touch-icon" href="/alarm-clock.png"></link>
       <link rel="manifest" href="/manifest.json" />
       <meta name="twitter:card" content="summary" />
-      <meta name="twitter:url" content="https://jotjike.vercel.app" />
+      <meta name="twitter:url" content="https://jotjik.vercel.app" />
       <meta name="twitter:title" content="jotjik | Track your sessions" />
       <meta name="twitter:description" content="Time tracking PWA" />
       <meta name="twitter:image" content="https://jotjik.vercel.app/alarm-clock.png" />
       <meta name="twitter:creator" content="@mibrychoa" />
       <meta property="og:type" content="website" />
-      <meta property="og:title" content="jotjike | Track your sessions" />
+      <meta property="og:title" content="jotjik | Track your sessions" />
       <meta property="og:description" content="Time tracking PWA" />
       <meta property="og:site_name" content="jotjik" />
       <meta property="og:url" content="https://https://jotjik.vercel.app" />
