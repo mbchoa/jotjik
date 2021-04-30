@@ -1,4 +1,4 @@
-const activeCx = 'bg-blue-500 hover:bg-blue-600 transition-bg duration-300';
+const activeCx = 'bg-pink-900 hover:bg-blue-600 transition-bg duration-300';
 const disabledCx = 'bg-gray-500 cursor-not-allowed';
 
 const Button = ({ children, disabled, onClick, ...rest }) => (

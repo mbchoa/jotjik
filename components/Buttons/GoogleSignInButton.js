@@ -15,7 +15,7 @@ const GoogleSignInButton = ({ redirectUrl }) => {
       <input type="hidden" name="callbackUrl" value={redirectUrl} />
       <button
         type="submit"
-        className="w-full inline-flex items-center rounded-sm bg-blue-500 text-center"
+        className="w-full inline-flex items-center rounded-sm bg-pink-900 text-center"
       >
         <Image src="/btn_google_light_normal.svg" width={46} height={46} />
         <span className="text-white font-medium mx-auto">Sign in with Google</span>
