@@ -1,6 +1,6 @@
 const Add = ({ onClick, ...rest }) => (
   <button
-    className="flex justify-center items-center w-full h-11 rounded bg-pink-900 hover:bg-blue-600 transition-bg duration-300"
+    className="flex justify-center items-center w-full h-11 rounded bg-pink-900 hover:bg-pink-800 transition-bg duration-300"
     onClick={onClick}
     {...rest}
   >
