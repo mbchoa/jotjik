@@ -24,7 +24,9 @@ const Layout = ({ children }) => (
       <meta property="og:image" content="https://jotjik.vercel.app/alarm-clock.png" />
     </Head>
     <AppHeader />
-    <main className="flex flex-col p-4 max-w-screen-sm sm:px-0 sm:my-0 sm:mx-auto">{children}</main>
+    <main className="flex flex-col p-4 max-w-screen-sm sm:px-0 sm:my-0 sm:mx-auto select-none">
+      {children}
+    </main>
     <AppFooter />
   </div>
 );
