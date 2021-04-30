@@ -3,25 +3,32 @@ import { getSession, signOut, useSession } from 'next-auth/client';
 
 import useStore from '../hooks/useStore';
 
+import Loader from '../components/Loader';
 import RecordList from '../components/RecordList';
 
 export default function Stats() {
   const [session, loading] = useSession();
   const getSessions = useStore((state) => state.getSessions);
+  const allSessions = useStore((state) => state.allSessions);
 
   useEffect(() => {
     getSessions(session.user.id);
   }, [session.user.id, getSessions]);
 
-  // When rendering client side don't display anything until loading is complete
-  if (typeof window !== 'undefined' && loading) {
-    return null;
-  }
+  const isLoading = typeof window !== 'undefined' && (loading || !allSessions.length);
 
   return (
-    <section>
-      <RecordList />
-      <button onClick={() => signOut()}>Sign out</button>
+    <section className="h-full">
+      {isLoading ? (
+        <div className="h-full flex items-center justify-center">
+          <Loader className="h-10 w-10" />
+        </div>
+      ) : (
+        <>
+          <RecordList />
+          <button onClick={signOut}>Sign out</button>
+        </>
+      )}
     </section>
   );
 }
