@@ -12,6 +12,7 @@ const Layout: React.FC<Props> = ({ children }) => (
     <Head>
       <title>jotjik | Track your sessions</title>
       <meta name="description" content="Time tracking PWA" />
+      <meta name="theme-color" content="#831843" />
       <link rel="apple-touch-icon" href="/alarm-clock.png"></link>
       <link rel="manifest" href="/manifest.json" />
       <meta name="twitter:card" content="summary" />
