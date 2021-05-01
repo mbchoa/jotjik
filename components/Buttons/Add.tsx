@@ -1,4 +1,4 @@
-const Add = ({ onClick, ...rest }) => (
+const Add: React.FC<React.ComponentPropsWithoutRef<'button'>> = ({ onClick, ...rest }) => (
   <button
     className="flex justify-center items-center w-full h-11 rounded bg-pink-900 hover:bg-pink-800 transition-bg duration-300"
     onClick={onClick}

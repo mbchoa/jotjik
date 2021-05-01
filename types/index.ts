@@ -1,5 +1,11 @@
 export interface Session {
-  _id: string
-  startedAt: Date
+  startedAt: string
   duration: number
 };
+
+export interface SessionsByDay {
+  [key: string]: {
+    totalTime: number
+    sessions: Session[]
+  }
+}

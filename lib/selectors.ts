@@ -1,10 +1,10 @@
 import { formatISO } from 'date-fns';
 
-import type { Session } from '../types';
+import type { Session, SessionsByDay } from '../types';
 
 export const sessions = (state): Session[] => state.allSessions;
 
-export const sessionsByDay = (state) => {
+export const sessionsByDay = (state): SessionsByDay => {
   return sessions(state).reduce((output, currSession) => {
     const key = formatISO(new Date(currSession.startedAt), { representation: 'date' });
     const sessionByDay = output[key] ?? { totalTime: 0, sessions: [] };

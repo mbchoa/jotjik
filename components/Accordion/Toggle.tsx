@@ -1,5 +1,12 @@
 import useContext from './useContext';
 
+interface Props {
+  children: React.ReactNode;
+  element: React.ElementType;
+  eventKey: number;
+  onClick?: () => void;
+}
+
 const useAccordionClick = (eventKey, onClick) => {
   const { onToggle, activeEventKey } = useContext();
   return (event) => {
@@ -8,25 +15,20 @@ const useAccordionClick = (eventKey, onClick) => {
   };
 };
 
-const Toggle = ({
-  className,
+const Toggle: React.FC<Props> = ({
+  children,
   element: Component = 'h3',
   eventKey,
   onClick,
-  children,
-  ariaControls,
-  id,
 }) => {
   const { activeEventKey } = useContext();
   const handleAccordionClick = useAccordionClick(eventKey, onClick);
 
   return (
-    <Component className={className}>
+    <Component className="mt-3 shadow bg-white rounded">
       <button
-        aria-controls={ariaControls}
         aria-expanded={eventKey === activeEventKey}
         className="w-full p-4 text-xl text-left"
-        id={id}
         onClick={handleAccordionClick}
       >
         {children}

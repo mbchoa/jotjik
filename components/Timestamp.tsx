@@ -1,19 +1,19 @@
 import React from 'react';
 
 interface Props {
-  hours?: number
-  minutes?: number
-  seconds: number
+  hours?: string
+  minutes?: string
+  seconds: string
 }
 
 const Timestamp: React.FC<Props> = ({ hours, minutes, seconds }) => (
   <>
-    {hours > 0 && (
+    {parseInt(hours) > 0 && (
       <>
         {hours} <span className="text-sm">h</span>
       </>
     )}
-    {minutes > 0 && (
+    {parseInt(minutes) > 0 && (
       <>
         {minutes} <span className="text-sm">m</span>
       </>

@@ -1,6 +1,6 @@
 import Button from './Button';
 
-const Reset = ({ onClick, ...rest }) => (
+const Reset: React.FC<React.ComponentPropsWithoutRef<'button'>> = ({ onClick, ...rest }) => (
   <Button onClick={onClick} {...rest} aria-label="Reset">
     <span className="block mr-1">
       <svg width="30" height="30" viewBox="0 0 21 18" fill="#fff">

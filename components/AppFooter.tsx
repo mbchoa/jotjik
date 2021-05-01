@@ -1,4 +1,4 @@
-const AppFooter = () => (
+const AppFooter: React.FC = () => (
   <footer className="flex justify-center items-end bg-pink-900 py-4 text-white relative">
     <a
       className="absolute inset-0 w-full h-full"

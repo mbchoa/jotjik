@@ -1,22 +1,30 @@
 import { format, parseISO } from 'date-fns';
 
 import { formatTime } from '../utilities';
+import type { Session } from '../types';
 
-import Accordion from './Accordion';
+import { Toggle, Panel } from './Accordion';
 import Timestamp from './Timestamp';
 
-const Record = ({ date, eventKey, sessions, totalTime }) => {
+interface Props {
+  date: string;
+  eventKey: number;
+  sessions: Session[];
+  totalTime: number;
+};
+
+const Record: React.FC<Props> = ({ date, eventKey, sessions, totalTime }) => {
   const { hh, mm, ss } = formatTime(totalTime);
 
   return (
     <article>
       <h2 className="text-xl">{format(parseISO(date), 'EEEE, MMMM do, yyyy')}</h2>
-      <Accordion.Toggle element="div" className="mt-3 shadow bg-white rounded" eventKey={eventKey}>
+      <Toggle element="div" eventKey={eventKey}>
         <span className="block text-xs">Total Time</span>
         <span className="block text-lg">
           <Timestamp hours={hh} minutes={mm} seconds={ss} />
         </span>
-        <Accordion.Panel eventKey={eventKey}>
+        <Panel eventKey={eventKey}>
           {sessions.map(({ startedAt, duration }) => {
             const { hh, mm, ss } = formatTime(duration);
             return (
@@ -31,8 +39,8 @@ const Record = ({ date, eventKey, sessions, totalTime }) => {
               </span>
             );
           })}
-        </Accordion.Panel>
-      </Accordion.Toggle>
+        </Panel>
+      </Toggle>
     </article>
   );
 };

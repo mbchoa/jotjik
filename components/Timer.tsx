@@ -13,18 +13,18 @@ import SaveButton from './Buttons/Save';
 
 import styles from '../styles/Timer.module.css';
 
-const Timer = () => {
+const Timer: React.FC = () => {
   const router = useRouter();
   const [session] = useSession();
   const { elapsedTime, isRunning, handleStart, handlePause, handleReset } = useTimer();
   const [startTime, setStartTime] = useState('');
   const postNewSession = useStore((state) => state.postNewSession);
 
-  const handleInitialStart = (e) => {
+  const handleInitialStart = () => {
     if (elapsedTime === 0) {
       setStartTime(new Date().toISOString());
     }
-    handleStart(e);
+    handleStart();
   };
 
   const handleSave = () => {

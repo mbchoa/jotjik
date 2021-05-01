@@ -1,11 +1,17 @@
-import { useMemo } from 'react';
+import { useMemo, Dispatch, SetStateAction } from 'react';
 
 import AccordionContext from './context';
 
 import Toggle from './Toggle';
 import Panel from './Panel';
 
-const Accordion = ({ activeEventKey, onToggle, children }) => {
+interface Props {
+  activeEventKey: number
+  children: React.ReactNode
+  onToggle: Dispatch<SetStateAction<number>>
+}
+
+const Accordion: React.FC<Props> = ({ activeEventKey, onToggle, children }) => {
   const context = useMemo(() => ({ activeEventKey, onToggle }), [activeEventKey, onToggle]);
 
   return (
@@ -15,7 +21,5 @@ const Accordion = ({ activeEventKey, onToggle, children }) => {
   );
 };
 
-Accordion.Toggle = Toggle;
-Accordion.Panel = Panel;
-
 export default Accordion;
+export { Toggle, Panel };

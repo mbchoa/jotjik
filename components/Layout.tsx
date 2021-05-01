@@ -3,7 +3,11 @@ import Head from 'next/head';
 import AppHeader from './AppHeader';
 import AppFooter from './AppFooter';
 
-const Layout = ({ children }) => (
+interface Props {
+  children: React.ReactNode;
+}
+
+const Layout: React.FC<Props> = ({ children }) => (
   <div className="h-screen grid grid-rows-hamburger">
     <Head>
       <title>jotjik | Track your sessions</title>

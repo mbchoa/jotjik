@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-const AppHeader = () => (
+const AppHeader: React.FC = () => (
   <header className="flex bg-pink-900 px-4 text-white">
     <div className="flex flex-1 items-center max-w-6xl m-auto">
       <span className="inline-block text-2xl">
