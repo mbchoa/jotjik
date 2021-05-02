@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { getSession, signOut, useSession } from 'next-auth/client';
+import { getSession, useSession } from 'next-auth/client';
 
 import useStore from '../hooks/useStore';
 
