@@ -12,11 +12,11 @@ interface Props {
 function getRotationByDirection(dir: Direction): string {
   switch (dir) {
     case Direction.Up:
-      return 'group-hover:rotate-180';
+      return 'rotate-180';
     case Direction.Right:
-      return 'group-hover:-rotate-45';
+      return '-rotate-45';
     case Direction.Left:
-      return 'group-hover:rotate-45';
+      return 'rotate-45';
     case Direction.Down:
     default:
       return '';
