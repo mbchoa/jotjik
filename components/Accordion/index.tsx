@@ -1,6 +1,7 @@
 import { useMemo, Dispatch, SetStateAction } from 'react';
 
 import AccordionContext from './context';
+import useContext from './useContext';
 
 import Toggle from './Toggle';
 import Panel from './Panel';
@@ -22,4 +23,4 @@ const Accordion: React.FC<Props> = ({ activeEventKey, onToggle, children }) => {
 };
 
 export default Accordion;
-export { Toggle, Panel };
+export { Toggle, Panel, useContext };
