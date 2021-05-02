@@ -4,7 +4,7 @@ export default async function sessionsHandler(req, res) {
   const { db } = await connectToDatabase();
 
   switch (req.method) {
-    case 'GET':
+    case 'GET': {
       const userSessions = await db
         .collection('sessions')
         .find({ userId: req.query.userId })
@@ -15,7 +15,8 @@ export default async function sessionsHandler(req, res) {
 
       res.json(userSessions);
       break;
-    case 'POST':
+    }
+    case 'POST': {
       const { startedAt, duration } = req.body;
 
       try {
@@ -34,5 +35,6 @@ export default async function sessionsHandler(req, res) {
       }
 
       break;
+    }
   }
 }

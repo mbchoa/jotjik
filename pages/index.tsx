@@ -2,7 +2,7 @@ import { format } from 'date-fns';
 
 import Timer from '../components/Timer';
 
-export default function Home() {
+const Home: React.FC = () => {
   const currentTime = Date.now();
   const dayTokens = format(currentTime, 'do').split(/(\d+)/).slice(1);
   const month = format(currentTime, 'MMMM');
@@ -22,4 +22,6 @@ export default function Home() {
       </div>
     </>
   );
-}
+};
+
+export default Home;

@@ -1,4 +1,4 @@
-import { StoreProvider } from '../lib/zustandProvider';
+import StoreProvider from '../components/ZustandProvider';
 import { useHydrate } from '../hooks/useHydrate';
 import { Provider } from 'next-auth/client';
 

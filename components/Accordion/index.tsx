@@ -7,9 +7,9 @@ import Toggle from './Toggle';
 import Panel from './Panel';
 
 interface Props {
-  activeEventKey: number
-  children: React.ReactNode
-  onToggle: Dispatch<SetStateAction<number>>
+  activeEventKey: number;
+  children: React.ReactNode;
+  onToggle: Dispatch<SetStateAction<number>>;
 }
 
 const Accordion: React.FC<Props> = ({ activeEventKey, onToggle, children }) => {

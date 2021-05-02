@@ -1,9 +1,7 @@
-import React from 'react';
-
 interface Props {
-  hours?: string
-  minutes?: string
-  seconds: string
+  hours?: string;
+  minutes?: string;
+  seconds: string;
 }
 
 const Timestamp: React.FC<Props> = ({ hours, minutes, seconds }) => (

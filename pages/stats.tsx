@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import { getSession, useSession } from 'next-auth/client';
+import { getSession, signOut, useSession } from 'next-auth/client';
 
 import useStore from '../hooks/useStore';
 
 import Loader from '../components/Loader';
 import RecordList from '../components/RecordList';
 
-export default function Stats() {
+const Stats: React.FC = () => {
   const [session, loading] = useSession();
   const getSessions = useStore((state) => state.getSessions);
   const allSessions = useStore((state) => state.allSessions);
@@ -28,7 +28,7 @@ export default function Stats() {
       )}
     </section>
   );
-}
+};
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
@@ -46,3 +46,5 @@ export async function getServerSideProps(context) {
     props: { session },
   };
 }
+
+export default Stats;

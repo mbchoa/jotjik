@@ -1,6 +1,6 @@
 import GoogleSignInButton from '../../components/Buttons/GoogleSignInButton';
 
-const Signin = () => {
+const Signin: React.FC = () => {
   return (
     <section className="flex flex-col justify-center h-full">
       <h1 className="mb-6 text-3xl font-bold">Log in to your account</h1>

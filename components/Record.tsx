@@ -12,11 +12,11 @@ interface Props {
   eventKey: number;
   sessions: Session[];
   totalTime: number;
-};
+}
 
 const Record: React.FC<Props> = ({ date, eventKey, sessions, totalTime }) => {
   const { activeEventKey } = useContext();
-  const { hh, mm, ss } = formatTime(totalTime);
+  const { hh: totalHours, mm: totalMinutes, ss: totalSeconds } = formatTime(totalTime);
 
   return (
     <article>
@@ -26,21 +26,27 @@ const Record: React.FC<Props> = ({ date, eventKey, sessions, totalTime }) => {
           <span>
             <span className="block text-xs">Total Time</span>
             <span className="block text-lg">
-              <Timestamp hours={hh} minutes={mm} seconds={ss} />
+              <Timestamp hours={totalHours} minutes={totalMinutes} seconds={totalSeconds} />
             </span>
           </span>
           <Chevron direction={eventKey === activeEventKey ? Direction.Up : Direction.Down} />
         </span>
         <Panel eventKey={eventKey} aria-labelledby={date} id={`${date}-panel`}>
           {sessions.map(({ startedAt, duration }) => {
-            const { hh, mm, ss } = formatTime(duration);
+            const { hh: durationHours, mm: durationMinutes, ss: durationSeconds } = formatTime(
+              duration
+            );
             return (
               <span key={startedAt}>
                 <hr className="my-4" />
                 <span className="flex items-center">
                   <span className="text-sm">{format(parseISO(startedAt), 'h:mm a')}</span>
                   <span className="ml-auto text-lg">
-                    <Timestamp hours={hh} minutes={mm} seconds={ss} />
+                    <Timestamp
+                      hours={durationHours}
+                      minutes={durationMinutes}
+                      seconds={durationSeconds}
+                    />
                   </span>
                 </span>
               </span>

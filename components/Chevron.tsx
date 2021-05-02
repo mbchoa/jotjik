@@ -7,7 +7,7 @@ export enum Direction {
 
 interface Props {
   direction?: Direction;
-};
+}
 
 function getRotationByDirection(dir: Direction): string {
   switch (dir) {
@@ -29,6 +29,6 @@ const Chevron: React.FC<Props> = ({ direction = Direction.Down }) => {
       <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
     </svg>
   );
-}
+};
 
 export default Chevron;

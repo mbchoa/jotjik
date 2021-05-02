@@ -17,7 +17,11 @@ const AppHeader: React.FC = () => (
         <ul>
           <li>
             <Link href="/stats">
-              <a className="text-xl">📈</a>
+              <a className="text-xl">
+                <span role="img" aria-label="Chart with upwards trend emoji">
+                  📈
+                </span>
+              </a>
             </Link>
           </li>
           <li></li>

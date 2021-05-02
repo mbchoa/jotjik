@@ -16,5 +16,5 @@ export const sessionsByDay = (state): SessionsByDay => {
         sessions: [...sessionByDay.sessions, currSession],
       },
     };
-  }, {})
+  }, {});
 };
