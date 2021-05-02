@@ -17,7 +17,7 @@ const AppHeader: React.FC = () => (
         <ul>
           <li>
             <Link href="/stats">
-              <a>stats</a>
+              <a className="text-xl">📈</a>
             </Link>
           </li>
           <li></li>

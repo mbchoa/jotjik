@@ -24,10 +24,7 @@ export default function Stats() {
           <Loader className="h-10 w-10" />
         </div>
       ) : (
-        <>
-          <RecordList />
-          <button onClick={signOut}>Sign out</button>
-        </>
+        <RecordList />
       )}
     </section>
   );
