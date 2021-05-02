@@ -18,7 +18,7 @@ const Record: React.FC<Props> = ({ date, eventKey, sessions, totalTime }) => {
 
   return (
     <article>
-      <h2 className="text-xl">{format(parseISO(date), 'EEEE, MMMM do, yyyy')}</h2>
+      <h2 className="text-xl">{format(parseISO(date), 'EEEE, MMMM do yyyy')}</h2>
       <Toggle id={date} element="div" eventKey={eventKey} aria-controls={`${date}-panel`}>
         <span className="block text-xs">Total Time</span>
         <span className="block text-lg">

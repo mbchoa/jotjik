@@ -61,7 +61,7 @@ const Timer: React.FC = () => {
           )}
         </li>
         <li className="flex items-center ml-4">
-          <ResetButton onClick={handleReset} />
+          <ResetButton disabled={elapsedTime === 0} onClick={handleReset} />
         </li>
         <li className="flex items-center ml-4">
           <SaveButton disabled={elapsedTime === 0} onClick={handleSave} />
