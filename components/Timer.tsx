@@ -48,7 +48,7 @@ const Timer: React.FC = () => {
       <p className="text-center">
         {Object.entries(formatTime(elapsedTime)).map(([key, interval]) => (
           <span className={`${styles['time-interval']} text-6xl last:text-gray-400`} key={key}>
-            {interval}
+            {interval.padStart(2, '0')}
           </span>
         ))}
       </p>
