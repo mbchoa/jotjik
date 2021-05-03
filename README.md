@@ -24,3 +24,11 @@ yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Seeding Database
+```bash
+DATABASE_URL=mongodb://localhost:7000/jotjik DATABASE_NAME=jotjik node lib/seedDatabase.js
+```
+Run the provided command to seed the Mongo database with session data. This assumes that users exist in the Mongo database already.
+
+
