@@ -11,10 +11,10 @@ export const formatTime = (time, showMs = false) => {
   const diffInMs = (diffInSec - ss) * 100;
   const ms = Math.floor(diffInMs);
 
-  const formattedHH = hh.toString();
-  const formattedMM = mm.toString();
-  const formattedSS = ss.toString();
-  const formattedMS = ms.toString();
+  const formattedHH = hh.toString().padStart(2, '0');
+  const formattedMM = mm.toString().padStart(2, '0');
+  const formattedSS = ss.toString().padStart(2, '0');
+  const formattedMS = ms.toString().padStart(2, '0');
 
   const output = {
     hh: formattedHH,
