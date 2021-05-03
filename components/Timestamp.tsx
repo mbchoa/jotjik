@@ -10,16 +10,16 @@ const Timestamp: React.FC<Props> = ({ hours, minutes, seconds }) => (
       <>
         {hours}
         <span className="text-sm">h</span>
+        &nbsp;
       </>
     )}
-    &nbsp;
     {parseInt(minutes) > 0 && (
       <>
         {minutes}
         <span className="text-sm">m</span>
+        &nbsp;
       </>
     )}
-    &nbsp;
     {seconds}
     <span className="text-sm">s</span>
   </>
