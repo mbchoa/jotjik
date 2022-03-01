@@ -5,6 +5,8 @@ export enum Direction {
   Left,
 }
 
+import styles from '../styles/Chevron.module.css';
+
 interface Props {
   direction?: Direction;
 }
@@ -23,7 +25,9 @@ function getRotationByDirection(dir: Direction): string {
   }
 }
 const Chevron: React.FC<Props> = ({ direction = Direction.Down }) => {
-  const cx = `w-6 transform transition-transform duration-400 ${getRotationByDirection(direction)}`;
+  const cx = `${
+    styles['chevron']
+  } w-6 transform transition-transform duration-400 ${getRotationByDirection(direction)}`;
   return (
     <svg className={cx} focusable="false" viewBox="0 0 24 24" aria-hidden="true">
       <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
