@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { getSession, useSession } from 'next-auth/client';
+import Link from 'next/link';
 
 import useStore from '../hooks/useStore';
 
@@ -18,6 +19,9 @@ const Stats: React.FC = () => {
 
   return (
     <section className="h-full">
+      <Link href="/">
+        <a className="before:content-['←'] before:mr-2 before:text-lg before:leading-5">Back</a>
+      </Link>
       {isLoading ? (
         <div className="h-full flex items-center justify-center">
           <Loader className="h-10 w-10" />
