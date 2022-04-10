@@ -20,7 +20,9 @@ const Stats: React.FC = () => {
   return (
     <section className="h-full">
       <Link href="/">
-        <a className="before:content-['←'] before:mr-2 before:text-lg before:leading-5">Back</a>
+        <a className="before:content-['←'] before:mr-2 before:text-lg before:leading-5 mb-4 block">
+          Back
+        </a>
       </Link>
       {isLoading ? (
         <div className="h-full flex items-center justify-center">
