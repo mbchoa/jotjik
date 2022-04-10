@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { getSession, signOut, useSession } from 'next-auth/client';
+import { getSession, useSession } from 'next-auth/client';
 
 import useStore from '../hooks/useStore';
 
@@ -9,13 +9,12 @@ import RecordList from '../components/RecordList';
 const Stats: React.FC = () => {
   const [session, loading] = useSession();
   const getSessions = useStore((state) => state.getSessions);
-  const allSessions = useStore((state) => state.allSessions);
 
   useEffect(() => {
     getSessions(session.user.id);
   }, [session.user.id, getSessions]);
 
-  const isLoading = typeof window !== 'undefined' && (loading || !allSessions.length);
+  const isLoading = typeof window !== 'undefined' && loading;
 
   return (
     <section className="h-full">

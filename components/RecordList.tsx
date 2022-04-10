@@ -9,8 +9,13 @@ import Record from './Record';
 
 const RecordList: React.FC = () => {
   const sessionsByDay: SessionsByDay = useStore(selectSessionsByDay);
-
   const [activeEventKey, setActiveEventKey] = useState(-1);
+
+  if (Object.keys(sessionsByDay).length === 0) {
+    return (
+      <p className="h-full flex items-center justify-center text-2xl">No sessions recorded.</p>
+    );
+  }
 
   return (
     (Object.keys(sessionsByDay).length ?? 0) > 0 && (
