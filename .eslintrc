@@ -6,15 +6,7 @@
     "es2021": true
   },
   "ignorePatterns": ["node_modules/*", ".next/*"],
-  "extends": [
-    "eslint:recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:jsx-a11y/recommended",
-    "plugin:prettier/recommended"
-  ],
+  "extends": ["eslint:recommended", "plugin:@next/next/recommended", "plugin:prettier/recommended"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -29,10 +21,7 @@
     }
   },
   "rules": {
-    "react/jsx-uses-react": "off", // React 17 no longer requires React to be imported
-    "react/react-in-jsx-scope": "off", // React 17 no longer requires React to be imported
-    "prettier/prettier": ["error", {}, { "usePrettierrc": true }],
-    "jsx-a11y/anchor-is-valid": [1]
+    "prettier/prettier": ["error", {}, { "usePrettierrc": true }]
   },
   "overrides": [
     {
@@ -47,20 +36,14 @@
       "parserOptions": {
         "project": "./tsconfig.json"
       },
-      "plugins": [
-        "@typescript-eslint",
-        "import"
-      ],
+      "plugins": ["@typescript-eslint"],
       "extends": [
         "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:import/typescript"
+        "plugin:@typescript-eslint/recommended"
       ],
       "rules": {
         "@typescript-eslint/no-inferrable-types": "off",
         "@typescript-eslint/no-explicit-any": "off",
-        // Who needs prop-types when you have REAL types?
-        "react/prop-types": "off",
         // note you must disable the base rule as it can report incorrect errors
         "no-use-before-define": "off",
         "@typescript-eslint/no-use-before-define": ["error"],
