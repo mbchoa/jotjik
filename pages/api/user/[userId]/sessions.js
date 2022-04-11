@@ -8,7 +8,6 @@ export default async function sessionsHandler(req, res) {
       const userSessions = await db
         .collection('sessions')
         .find({ userId: req.query.userId })
-        .sort({ startedAt: -1 })
         // omits the "userId" fields from each record
         .project({ _id: 0, userId: 0 })
         .toArray();
