@@ -14,7 +14,7 @@
     "mongodb": "^3.6.6",
     "mongodb-client-encryption": "^1.2.3",
     "next": "12.1.0",
-    "next-auth": "^3.15.13",
+    "next-auth": "^3.29.3",
     "next-pwa": "^5.2.15",
     "react": "17.0.2",
     "react-dom": "17.0.2",
