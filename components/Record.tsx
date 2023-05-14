@@ -1,9 +1,9 @@
 import { format, parseISO } from 'date-fns';
 
-import { formatTime } from '../utilities';
 import type { Session } from '../types';
+import { formatTime } from '../utilities';
 
-import { Toggle, Panel, useContext } from './Accordion';
+import { Panel, Toggle, useContext } from './Accordion';
 import Chevron, { Direction } from './Chevron';
 import Timestamp from './Timestamp';
 
@@ -33,9 +33,11 @@ const Record: React.FC<Props> = ({ date, eventKey, sessions, totalTime }) => {
         </span>
         <Panel eventKey={eventKey} aria-labelledby={date} id={`${date}-panel`}>
           {sessions.map(({ startedAt, duration }) => {
-            const { hh: durationHours, mm: durationMinutes, ss: durationSeconds } = formatTime(
-              duration
-            );
+            const {
+              hh: durationHours,
+              mm: durationMinutes,
+              ss: durationSeconds,
+            } = formatTime(duration);
             return (
               <span key={startedAt}>
                 <hr className="my-4" />

@@ -5,23 +5,19 @@ const AppHeader: React.FC = () => (
     <div className="flex flex-1 items-center max-w-6xl m-auto">
       <span className="inline-block text-2xl">
         <Link href="/">
-          <a>
-            <span role="img" aria-label="Clock emoji">
-              ⏳
-            </span>{' '}
-            jotjik
-          </a>
+          <span role="img" aria-label="Clock emoji">
+            ⏳
+          </span>{' '}
+          jotjik
         </Link>
       </span>
       <nav className="ml-auto">
         <ul>
           <li>
-            <Link href="/stats">
-              <a className="text-xl">
-                <span role="img" aria-label="Chart with upwards trend emoji">
-                  📈
-                </span>
-              </a>
+            <Link href="/stats" className="text-xl">
+              <span role="img" aria-label="Chart with upwards trend emoji">
+                📈
+              </span>
             </Link>
           </li>
           <li></li>
