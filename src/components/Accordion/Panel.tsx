@@ -1,4 +1,4 @@
-import useContext from './useContext';
+import { useAccordionContext } from '@/components/Accordion/AccordonProvider';
 
 interface Props {
   children: React.ReactNode;
@@ -7,7 +7,7 @@ interface Props {
 }
 
 const Panel: React.FC<Props> = ({ eventKey, children, id, ...rest }) => {
-  const { activeEventKey } = useContext();
+  const { activeEventKey } = useAccordionContext();
   const cx = `overflow-hidden transition-max-height duration-500 ease-in-out ${
     eventKey === activeEventKey ? 'max-h-screen' : 'max-h-0'
   }`;
