@@ -1,39 +1,35 @@
-import useContext from './useContext';
+import React from 'react';
+import { useAccordionContext } from './AccordonProvider';
 
-interface Props {
+interface IToggleProps {
   children: React.ReactNode;
   element: React.ElementType;
   eventKey: number;
   id: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
-const useAccordionClick = (eventKey, onClick) => {
-  const { onToggle, activeEventKey } = useContext();
-  return (event) => {
-    onToggle(eventKey === activeEventKey ? null : eventKey);
-    onClick && onClick(event);
-  };
-};
-
-const Toggle: React.FC<Props> = ({
+const Toggle = ({
   children,
   element: Component = 'h3',
   eventKey,
   id,
   onClick,
   ...rest
-}) => {
-  const { activeEventKey } = useContext();
-  const handleAccordionClick = useAccordionClick(eventKey, onClick);
-
+}: IToggleProps) => {
+  const { activeEventKey, onToggle } = useAccordionContext();
   return (
     <Component className="mt-3 shadow bg-white rounded">
       <button
         aria-expanded={eventKey === activeEventKey}
         className="w-full p-4 text-xl text-left"
         id={id}
-        onClick={handleAccordionClick}
+        onClick={(event) => {
+          onToggle(eventKey === activeEventKey ? -1 : eventKey);
+          if (onClick) {
+            onClick(event);
+          }
+        }}
         {...rest}
       >
         {children}
