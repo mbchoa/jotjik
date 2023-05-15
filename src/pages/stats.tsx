@@ -1,14 +1,14 @@
-import Loader from "@/components/Loader";
-import RecordList from "@/components/RecordList";
-import { appRouter } from "@/server/api/root";
-import { createInnerTRPCContext } from "@/server/api/trpc";
-import { authOptions } from "@/server/auth";
-import { trpc } from "@/utils/api";
-import { createServerSideHelpers } from "@trpc/react-query/server";
-import { type GetServerSidePropsContext } from "next";
-import { getServerSession } from "next-auth/next";
-import Link from "next/link";
-import superjson from "superjson";
+import Loader from '@/components/Loader';
+import RecordList from '@/components/RecordList';
+import { appRouter } from '@/server/api/root';
+import { createInnerTRPCContext } from '@/server/api/trpc';
+import { authOptions } from '@/server/auth';
+import { trpc } from '@/utils/api';
+import { createServerSideHelpers } from '@trpc/react-query/server';
+import { type GetServerSidePropsContext } from 'next';
+import { getServerSession } from 'next-auth/next';
+import Link from 'next/link';
+import superjson from 'superjson';
 
 const Stats = () => {
   const { data, isLoading } = trpc.timedSessions.getAllTimedSessions.useQuery();
@@ -38,7 +38,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (!session) {
     return {
       redirect: {
-        destination: "/",
+        destination: '/api/auth/signin?callbackUrl=%2Fstats',
         permanent: false,
       },
     };

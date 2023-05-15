@@ -1,6 +1,6 @@
 import { formatTime } from "@/utils/formatTime";
 import { type TimedSessions } from "@prisma/client";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 
 import Chevron, { Direction } from "@/components/Chevron";
 import Timestamp from "@/components/Timestamp";
@@ -24,7 +24,7 @@ const Record = ({ date, eventKey, sessions, totalTime }: IRecordProps) => {
   return (
     <article>
       <h2 className="text-xl">
-        {format(new Date(date), "EEEE, MMMM do yyyy")}
+        {format(parseISO(date), "EEEE, MMMM do yyyy")}
       </h2>
       <Toggle
         id={date}

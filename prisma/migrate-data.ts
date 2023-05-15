@@ -14,19 +14,26 @@ async function main() {
     const sessionsCollection = mongo.db("jotjik").collection("sessions");
     const usersCollection = mongo.db("jotjik").collection("users");
     const accountsCollection = mongo.db("jotjik").collection("accounts");
+    const timedSessions = await sessionsCollection.find({}).toArray();
     const users = await usersCollection.find({}).toArray();
     const accounts = await accountsCollection.find({}).toArray();
 
     await prisma.$transaction(async (tx) => {
-      // await tx.user.createMany({
-      //   data: users.map((user) => {
-      //     return {
-      //       name: user.name,
-      //       email: user.email,
-      //       image: user.image,
-      //     };
-      //   }),
-      // });
+      await tx.user.createMany({
+        data: users.map((user) => {
+          return {
+            name: user.name,
+            email: user.email,
+            image: user.image,
+          };
+        }),
+      });
+
+      const newUsers = await tx.user.findMany({});
+      if (newUsers[0] === undefined || newUsers[1] === undefined) {
+        throw new Error("Error creating new users");
+      }
+
       await tx.account.createMany({
         data: [
           {
@@ -39,7 +46,7 @@ async function main() {
             token_type: "Bearer",
             scope:
               "openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
-            userId: "clhnfx1930001hc2mgvu4hycg",
+            userId: newUsers[0].id,
           },
           {
             type: "oauth",
@@ -51,41 +58,29 @@ async function main() {
             token_type: "Bearer",
             scope:
               "openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
-            userId: "clhnfx1930002hc2mgseavufx",
+            userId: newUsers[1].id,
           },
         ],
       });
 
-      /**
-       * [
-  {
-    _id: new ObjectId("60849dc8d3b0fb0008d4cf22"),
-    compoundId: '5dd8361814af5f345e9ffa4117d5ead4ae0c1604ef135e8bb606bf4421bb96de',
-    userId: new ObjectId("60849dc8d3b0fb0008d4cf21"),
-    providerType: 'oauth',
-    providerId: 'google',
-    providerAccountId: '113708295991195694837',
-    refreshToken: null,
-    accessToken: 'ya29.a0AfH6SMA_iu_DBG0Nk0x8SrBAEF5Gr6s1j8xlXmFzGcPFgd0xnTkzqseslckQmdz1WxLMxQXzrbXnkVgWYDIKEuHenih_SaLPGNnoaaoxIbxWPqtHeX1_ywvCfEGVbUjj9RsoKQV1t9uMHBzvMVSXs76ebawQ',
-    accessTokenExpires: null,
-    createdAt: 2021-04-24T22:38:00.275Z,
-    updatedAt: 2021-04-24T22:38:00.275Z
-  },
-  {
-    _id: new ObjectId("6086d5fd92be5b0008b4187d"),
-    compoundId: '405f878ab437a0f7e76ad9963a7a24e453ede870d72bd0fbc78dabf14f1ae3f2',
-    userId: new ObjectId("6086d5fd92be5b0008b4187c"),
-    providerType: 'oauth',
-    providerId: 'google',
-    providerAccountId: '115578235515828145802',
-    refreshToken: null,
-    accessToken: 'ya29.a0AfH6SMCVe0h2PJX3FjyKdPJmCwrdndyMRWvDbhu6mkWXQDucQizSTj8-jeScYe_EKuECrFpFoIAL6GG_WR_jECQ9vyDHDbYlS4-Zs_vrm2r_14UufgbydcXniSb3H1eUKHKPiBz4EbtjlZ3szAqIiVDi1CHX',
-    accessTokenExpires: null,
-    createdAt: 2021-04-26T15:02:21.880Z,
-    updatedAt: 2021-04-26T15:02:21.880Z
-  }
-]
-       */
+      await tx.timedSessions.createMany({
+        data: [
+          ...timedSessions
+            .filter(({ userId }) => userId === "637a895072775d000f6abb76")
+            .map((timedSession) => ({
+              startedAt: timedSession.startedAt,
+              duration: timedSession.duration,
+              userId: newUsers[1]?.id,
+            })),
+          ...timedSessions
+            .filter(({ userId }) => userId === "62f614bcdd66d426e4b1cb24")
+            .map((timedSession) => ({
+              startedAt: timedSession.startedAt,
+              duration: timedSession.duration,
+              userId: newUsers[0]?.id,
+            })),
+        ],
+      });
     });
 
     console.log(accounts);

@@ -7,6 +7,9 @@ export const timedSessionsRouter = createTRPCRouter({
       where: {
         userId: ctx.session.user.id,
       },
+      orderBy: {
+        startedAt: "desc",
+      },
     });
   }),
   saveTimedSession: protectedProcedure
