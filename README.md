@@ -2,17 +2,24 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, spin up MongoDB container:
+First, spin up your Postgres container:
 
 ```bash
-docker-compose up
+docker build -t jotjik_db .
+docker run -d --name jotjik_db -p 5432:5432 jotjik_db:latest
 ```
 
-Second, copy the `env.local.example` to a `.env.local` file and update the environment variables in there with your own Google OAuth API keys:
+Second, run Prisma migration command to setup database tables:
+
+```bash
+npx prisma migrate dev
+```
+
+Third, copy the `env.example` to a `.env` file and update the environment variables in there with your own Google OAuth API keys:
 
 ```
-GOOGLE_ID=YOUR_KEY_HERE
-GOOGLE_SECRET=YOUR_KEY_HERE
+GOOGLE_CLIENT_ID=YOUR_KEY_HERE
+GOOGLE_CLIENT_SECRET=YOUR_KEY_HERE
 ```
 
 Lastly, run the development server:
@@ -21,14 +28,8 @@ Lastly, run the development server:
 npm run dev
 # or
 yarn dev
+# or
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## Seeding Database
-```bash
-DATABASE_URL=mongodb://localhost:7000/jotjik DATABASE_NAME=jotjik node lib/seedDatabase.js
-```
-Run the provided command to seed the Mongo database with session data. This assumes that users exist in the Mongo database already.
-
-
