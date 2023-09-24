@@ -1,14 +1,14 @@
-import { type Config } from "tailwindcss";
+import { type Config } from 'tailwindcss';
 
 export default {
-  content: ["./src/**/*.{js,ts,jsx,tsx}"],
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       gridTemplateRows: {
-        hamburger: "48px auto 96px",
+        hamburger: '48px auto 96px max-content',
       },
       transitionProperty: {
-        "max-height": "max-height",
+        'max-height': 'max-height',
       },
     },
   },

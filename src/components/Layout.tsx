@@ -1,14 +1,15 @@
-import Head from "next/head";
+import Head from 'next/head';
 
-import AppFooter from "@/components/AppFooter";
-import AppHeader from "@/components/AppHeader";
+import AppFooter from '@/components/AppFooter';
+import AppHeader from '@/components/AppHeader';
+import StickyTimer from './StickyTimer';
 
 interface ILayoutProps {
   children: React.ReactNode;
 }
 
 const Layout = ({ children }: ILayoutProps) => (
-  <div className="grid-rows-hamburger grid h-screen">
+  <div>
     <Head>
       <title>jotjik | Track your sessions</title>
       <meta name="description" content="Time tracking PWA" />
@@ -19,26 +20,23 @@ const Layout = ({ children }: ILayoutProps) => (
       <meta name="twitter:url" content="https://jotjik.vercel.app" />
       <meta name="twitter:title" content="jotjik | Track your sessions" />
       <meta name="twitter:description" content="Time tracking PWA" />
-      <meta
-        name="twitter:image"
-        content="https://jotjik.vercel.app/alarm-clock.png"
-      />
+      <meta name="twitter:image" content="https://jotjik.vercel.app/alarm-clock.png" />
       <meta name="twitter:creator" content="@mibrychoa" />
       <meta property="og:type" content="website" />
       <meta property="og:title" content="jotjik | Track your sessions" />
       <meta property="og:description" content="Time tracking PWA" />
       <meta property="og:site_name" content="jotjik" />
       <meta property="og:url" content="https://https://jotjik.vercel.app" />
-      <meta
-        property="og:image"
-        content="https://jotjik.vercel.app/alarm-clock.png"
-      />
+      <meta property="og:image" content="https://jotjik.vercel.app/alarm-clock.png" />
     </Head>
-    <AppHeader />
-    <main className="flex max-w-screen-sm select-none flex-col p-4 sm:mx-auto sm:my-0 sm:px-0">
-      {children}
-    </main>
-    <AppFooter />
+    <div className="grid-rows-hamburger grid h-screen">
+      <AppHeader />
+      <main className="flex max-w-screen-sm select-none flex-col p-4 sm:mx-auto sm:my-0 sm:px-0">
+        {children}
+      </main>
+      <AppFooter />
+    </div>
+    <StickyTimer />
   </div>
 );
 
