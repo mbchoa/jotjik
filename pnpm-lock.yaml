@@ -13,7 +13,7 @@ dependencies:
     version: 4.15.0(prisma@4.15.0)
   '@t3-oss/env-nextjs':
     specifier: ^0.7.1
-    version: 0.7.1(typescript@5.0.4)(zod@3.21.4)
+    version: 0.7.1(typescript@5.0.4)(zod@3.22.3)
   '@tanstack/react-query':
     specifier: ^4.29.5
     version: 4.29.5(react-dom@18.2.0)(react@18.2.0)
@@ -57,8 +57,8 @@ dependencies:
     specifier: 1.12.2
     version: 1.12.2
   zod:
-    specifier: ^3.21.4
-    version: 3.21.4
+    specifier: ^3.22.3
+    version: 3.22.3
 
 devDependencies:
   '@total-typescript/ts-reset':
@@ -117,7 +117,7 @@ devDependencies:
     version: 3.3.2
   trpc-playground:
     specifier: ^1.0.4
-    version: 1.0.4(@trpc/server@10.26.0)(@types/node@18.16.9)(typescript@5.0.4)(zod@3.21.4)
+    version: 1.0.4(@trpc/server@10.26.0)(@types/node@18.16.9)(typescript@5.0.4)(zod@3.22.3)
   tsx:
     specifier: ^3.12.7
     version: 3.12.7
@@ -618,7 +618,7 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /@t3-oss/env-core@0.7.1(typescript@5.0.4)(zod@3.21.4):
+  /@t3-oss/env-core@0.7.1(typescript@5.0.4)(zod@3.22.3):
     resolution: {integrity: sha512-3+SQt39OlmSaRLqYVFv8uRm1BpFepM5TIiMytRqO9cjH+wB77o6BIJdeyM5h5U4qLBMEzOJWCY4MBaU/rLwbYw==}
     peerDependencies:
       typescript: '>=4.7.2'
@@ -628,10 +628,10 @@ packages:
         optional: true
     dependencies:
       typescript: 5.0.4
-      zod: 3.21.4
+      zod: 3.22.3
     dev: false
 
-  /@t3-oss/env-nextjs@0.7.1(typescript@5.0.4)(zod@3.21.4):
+  /@t3-oss/env-nextjs@0.7.1(typescript@5.0.4)(zod@3.22.3):
     resolution: {integrity: sha512-tQDbNLGCOvKGi+JoGuJ/CJInJI7/kLWJqtgGppAKS7ZFLdVOqZYR/uRjxlXOWPnxmUKF8VswOAsq7fXUpNZDhA==}
     peerDependencies:
       typescript: '>=4.7.2'
@@ -640,9 +640,9 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@t3-oss/env-core': 0.7.1(typescript@5.0.4)(zod@3.21.4)
+      '@t3-oss/env-core': 0.7.1(typescript@5.0.4)(zod@3.22.3)
       typescript: 5.0.4
-      zod: 3.21.4
+      zod: 3.22.3
     dev: false
 
   /@tanstack/query-core@4.29.5:
@@ -3541,7 +3541,7 @@ packages:
       punycode: 2.3.0
     dev: true
 
-  /trpc-playground@1.0.4(@trpc/server@10.26.0)(@types/node@18.16.9)(typescript@5.0.4)(zod@3.21.4):
+  /trpc-playground@1.0.4(@trpc/server@10.26.0)(@types/node@18.16.9)(typescript@5.0.4)(zod@3.22.3):
     resolution: {integrity: sha512-6nVf1o2LNoo1g6oTS24yajoH7xV4CFjxGAbAH7qLXqa3yo9qB5QHsWLbrm1hNt51SyCG++P0zHJaCdVfgvEVDg==}
     peerDependencies:
       '@trpc/server': ^10
@@ -3552,8 +3552,8 @@ packages:
       '@trpc/server': 10.26.0
       lodash: 4.17.21
       uttp: 0.1.3
-      zod: 3.21.4
-      zod-to-ts: 1.1.4(typescript@5.0.4)(zod@3.21.4)
+      zod: 3.22.3
+      zod-to-ts: 1.1.4(typescript@5.0.4)(zod@3.22.3)
     transitivePeerDependencies:
       - '@types/node'
       - express
@@ -3832,15 +3832,15 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /zod-to-ts@1.1.4(typescript@5.0.4)(zod@3.21.4):
+  /zod-to-ts@1.1.4(typescript@5.0.4)(zod@3.22.3):
     resolution: {integrity: sha512-jsCg+pTNxLAdJOfW4ul+SpechdGYEJPPnssSbqWdR2LSIkotT22k+UvqPb1nEHwe/YbEcbUOlZUfGM0npgR+Jg==}
     peerDependencies:
       typescript: ^4.9.4 || ^5.0.2
       zod: ^3
     dependencies:
       typescript: 5.0.4
-      zod: 3.21.4
+      zod: 3.22.3
     dev: true
 
-  /zod@3.21.4:
-    resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
+  /zod@3.22.3:
+    resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
