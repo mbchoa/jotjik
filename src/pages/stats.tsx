@@ -1,5 +1,6 @@
 import Loader from '@/components/Loader';
 import RecordList from '@/components/RecordList';
+import { TimerContext } from '@/contexts/TimerContext';
 import { appRouter } from '@/server/api/root';
 import { createInnerTRPCContext } from '@/server/api/trpc';
 import { authOptions } from '@/server/auth';
@@ -8,10 +9,18 @@ import { createServerSideHelpers } from '@trpc/react-query/server';
 import { type GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth/next';
 import Link from 'next/link';
+import { useContext, useEffect } from 'react';
 import superjson from 'superjson';
 
 const Stats = () => {
   const { data, isLoading } = trpc.timedSessions.getAllTimedSessions.useQuery();
+  const { resumeFromLocalStorage } = useContext(TimerContext);
+
+  useEffect(() => {
+    if (localStorage.getItem('preAuthTimerProgress')) {
+      resumeFromLocalStorage();
+    }
+  }, [resumeFromLocalStorage]);
 
   return (
     <section className="h-full">

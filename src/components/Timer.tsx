@@ -1,10 +1,11 @@
-import useTimer from '@/hooks/useTimer';
 import { formatTime } from '@/utils/formatTime';
 
 import PauseButton from './Buttons/Pause';
 import PlayButton from './Buttons/Play';
 import ResetButton from './Buttons/Reset';
 import SaveButton from './Buttons/Save';
+import { TimerContext } from '@/contexts/TimerContext';
+import { useContext } from 'react';
 
 interface ITimerProps {
   isSaving: boolean;
@@ -12,7 +13,7 @@ interface ITimerProps {
 }
 
 const Timer = ({ isSaving, onSave }: ITimerProps) => {
-  const { duration, startedAt, isRunning, start, pause, reset } = useTimer();
+  const { duration, startedAt, isRunning, start, pause, reset } = useContext(TimerContext);
 
   const handleSave = () => {
     onSave(startedAt, duration);

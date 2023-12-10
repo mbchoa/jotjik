@@ -1,4 +1,5 @@
 import Layout from '@/components/Layout';
+import { TimerProvider } from '@/contexts/TimerContext';
 import '@/styles/globals.css';
 import { trpc } from '@/utils/api';
 import { type Session } from 'next-auth';
@@ -13,10 +14,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <Layout>
-        <Component {...pageProps} />
-        <ToastContainer position="bottom-center" autoClose={2000} hideProgressBar closeOnClick />
-      </Layout>
+      <TimerProvider>
+        <Layout>
+          <Component {...pageProps} />
+          <ToastContainer position="bottom-center" autoClose={2000} hideProgressBar closeOnClick />
+        </Layout>
+      </TimerProvider>
     </SessionProvider>
   );
 };
