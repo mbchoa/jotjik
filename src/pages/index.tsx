@@ -3,7 +3,6 @@ import { format } from 'date-fns';
 import { signIn, useSession } from 'next-auth/react';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
-import { type Session } from 'types';
 import Timer from '../components/Timer';
 
 const Home = () => {
@@ -21,10 +20,8 @@ const Home = () => {
       const payload = { startedAt, duration };
 
       if (!session) {
-        const existingQueuedSessions = localStorage.getItem('queuedSessions');
-        const parsedQueuedSessions = JSON.parse(existingQueuedSessions ?? '[]') as Session[];
         // If the user is not logged in, queue the session to local storage
-        localStorage.setItem('queuedSessions', JSON.stringify([...parsedQueuedSessions, payload]));
+        localStorage.setItem('queuedSession', JSON.stringify(payload));
         await signIn('undefined', { callbackUrl: '/stats' });
       } else {
         // If the user is logged in, save the session to the database
