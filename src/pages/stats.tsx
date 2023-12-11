@@ -14,7 +14,15 @@ import superjson from 'superjson';
 import type { Session } from 'types';
 
 const Stats = () => {
-  const { data, isLoading, refetch } = trpc.timedSessions.getAllTimedSessions.useQuery();
+  const { data, isLoading, refetch, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    trpc.timedSessions.getInfiniteTimedSessions.useInfiniteQuery(
+      {
+        limit: 10,
+      },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+      }
+    );
   const { mutateAsync: saveSession, isLoading: isSaving } =
     trpc.timedSessions.saveTimedSession.useMutation({
       onSuccess: async () => {
@@ -49,12 +57,20 @@ const Stats = () => {
       >
         Back
       </Link>
-      {isLoading || isSaving || data === undefined ? (
+      {isLoading || isSaving || !data || !data.pages[0] ? (
         <div className="flex h-full items-center justify-center">
           <Loader className="h-10 w-10" />
         </div>
       ) : (
-        <RecordList sessions={data} />
+        <RecordList sessions={data.pages.flatMap((page) => page.timedSessions)} />
+      )}
+      {hasNextPage && (
+        <button
+          className="mt-4 block mx-auto px-4 py-2 rounded-md bg-pink-900 text-white"
+          onClick={() => fetchNextPage()}
+        >
+          {isFetchingNextPage ? <Loader className="h-5 w-5" /> : 'Load More'}
+        </button>
       )}
     </section>
   );
