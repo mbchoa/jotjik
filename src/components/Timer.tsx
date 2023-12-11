@@ -1,11 +1,11 @@
 import { formatTime } from '@/utils/formatTime';
 
+import { TimerContext } from '@/contexts/TimerContext';
+import { useContext } from 'react';
 import PauseButton from './Buttons/Pause';
 import PlayButton from './Buttons/Play';
 import ResetButton from './Buttons/Reset';
 import SaveButton from './Buttons/Save';
-import { TimerContext } from '@/contexts/TimerContext';
-import { useContext } from 'react';
 
 interface ITimerProps {
   isSaving: boolean;
@@ -29,18 +29,18 @@ const Timer = ({ isSaving, onSave }: ITimerProps) => {
           </span>
         ))}
       </p>
-      <ul className="mt-24 flex">
-        <li className="flex items-center">
+      <ul className="mt-24 flex gap-x-4 justify-center">
+        <li>
           {isRunning ? (
             <PauseButton disabled={isSaving} onClick={pause} />
           ) : (
             <PlayButton disabled={isSaving} onClick={start} />
           )}
         </li>
-        <li className="ml-4 flex items-center">
+        <li>
           <ResetButton disabled={duration === 0 || isSaving} onClick={reset} />
         </li>
-        <li className="ml-4 flex items-center">
+        <li>
           <SaveButton
             disabled={duration === 0 || isSaving}
             loading={isSaving}
