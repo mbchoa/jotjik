@@ -1,8 +1,8 @@
-import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '@/server/api/trpc';
 import { z } from 'zod';
 
 export const timedSessionsRouter = createTRPCRouter({
-  health: protectedProcedure.query(() => Math.random()),
+  health: publicProcedure.query(() => Math.random()),
   getInfiniteTimedSessions: protectedProcedure
     .input(
       z.object({
