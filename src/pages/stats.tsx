@@ -1,16 +1,9 @@
 import Loader from '@/components/Loader';
 import RecordList from '@/components/RecordList';
 import { TimerContext } from '@/contexts/TimerContext';
-import { appRouter } from '@/server/api/root';
-import { createInnerTRPCContext } from '@/server/api/trpc';
-import { authOptions } from '@/server/auth';
 import { trpc } from '@/utils/api';
-import { createServerSideHelpers } from '@trpc/react-query/server';
-import { type GetServerSidePropsContext } from 'next';
-import { getServerSession } from 'next-auth/next';
 import Link from 'next/link';
 import { useContext, useEffect } from 'react';
-import superjson from 'superjson';
 import type { Session } from 'types';
 
 const Stats = () => {
@@ -59,7 +52,7 @@ const Stats = () => {
       </Link>
       {isLoading || isSaving || !data || !data.pages[0] ? (
         <div className="flex h-full items-center justify-center">
-          <Loader className="h-10 w-10" />
+          <Loader className="h-10 w-10 text-pink-900" />
         </div>
       ) : (
         <RecordList sessions={data.pages.flatMap((page) => page.timedSessions)} />
@@ -76,31 +69,33 @@ const Stats = () => {
   );
 };
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerSession(context.req, context.res, authOptions);
+// export async function getServerSideProps(context: GetServerSidePropsContext) {
+//   const session = await getServerSession(context.req, context.res, authOptions);
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/api/auth/signin?callbackUrl=%2Fstats',
-        permanent: false,
-      },
-    };
-  }
+//   if (!session) {
+//     return {
+//       redirect: {
+//         destination: '/api/auth/signin?callbackUrl=%2Fstats',
+//         permanent: false,
+//       },
+//     };
+//   }
 
-  const helpers = createServerSideHelpers({
-    router: appRouter,
-    ctx: createInnerTRPCContext({ session }),
-    transformer: superjson,
-  });
+//   const helpers = createServerSideHelpers({
+//     router: appRouter,
+//     ctx: createInnerTRPCContext({ session }),
+//     transformer: superjson,
+//   });
 
-  await helpers.timedSessions.getAllTimedSessions.prefetch();
+//   await helpers.timedSessions.getInfiniteTimedSessions.prefetchInfinite({
+//     limit: 10,
+//   });
 
-  return {
-    props: {
-      trpcState: helpers.dehydrate(),
-    },
-  };
-}
+//   return {
+//     props: {
+//       trpcState: helpers.dehydrate(),
+//     },
+//   };
+// }
 
 export default Stats;
