@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/trpc/timedSessions.health",
-      "schedule": "* * * * *"
+      "schedule": "0 1 * * *"
     }
   ]
 }
