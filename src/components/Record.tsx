@@ -21,8 +21,8 @@ const Record = ({ date, eventKey, sessions, totalTime }: IRecordProps) => {
 
   return (
     <article>
-      <h2 className="text-xl">{format(parseISO(date), 'EEEE, MMMM do yyyy')}</h2>
       <Toggle id={date} element="div" eventKey={eventKey} aria-controls={`${date}-panel`}>
+        <h2 className="text-xl mb-2">{format(parseISO(date), 'EEEE, MMMM do yyyy')}</h2>
         <span className="group flex justify-between">
           <span>
             <span className="block text-xs">Total Time</span>
