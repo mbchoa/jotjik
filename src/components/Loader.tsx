@@ -1,4 +1,4 @@
-import cx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 interface ILoaderProps {
   className?: string;
@@ -6,7 +6,7 @@ interface ILoaderProps {
 
 const Loader = ({ className }: ILoaderProps) => (
   <svg
-    className={cx('animate-spin text-white', className || '')}
+    className={twMerge('animate-spin text-white', className || '')}
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
