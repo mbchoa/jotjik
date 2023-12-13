@@ -5,10 +5,11 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
-    "db:migrate": "prisma migrate dev"
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:generate": "prisma generate --schema=./prisma/schema.prisma"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",

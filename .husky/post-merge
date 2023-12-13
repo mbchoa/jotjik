@@ -18,7 +18,7 @@ if [ -z "${CI}" ] && [ $PRISMA_CHANGED_LINES -gt 0 ]; then
   echo "Detected changes to Prisma schema or migration files. Regenerating client and applying migrations..."
   # ensure packages are installed
   pnpm i
-  pnpm run -F prisma-client db:migrate:deploy && pnpm run -F prisma-client db:generate
+  pnpm run db:deploy && pnpm db:generate
 fi
 
 # return to previous working dir
