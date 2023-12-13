@@ -57,7 +57,7 @@ jobs:
         # change this if your site requires a custom build command
         run: ./node_modules/.bin/next build
         env:
-          DATABASE_URL: placeholder-db-url
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
           NEXTAUTH_SECRET: placeholder-nextauth-secret
           GOOGLE_CLIENT_ID: placeholder-google-client-id
           GOOGLE_CLIENT_SECRET: placeholder-google-client-secret
