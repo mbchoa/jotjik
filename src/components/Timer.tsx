@@ -1,7 +1,7 @@
-import { formatTime } from '@/utils/formatTime';
-
 import { TimerContext } from '@/contexts/TimerContext';
+import { formatTime } from '@/utils/formatTime';
 import { useContext } from 'react';
+import SlotCounter from 'react-slot-counter';
 import PauseButton from './Buttons/Pause';
 import PlayButton from './Buttons/Play';
 import ResetButton from './Buttons/Reset';
@@ -25,7 +25,11 @@ const Timer = ({ isSaving, onSave }: ITimerProps) => {
       <p className="min-width-[283px] text-center">
         {Object.entries(formatTime(duration)).map(([key, interval]) => (
           <span className="time-interval text-6xl last:text-gray-400" key={key}>
-            {interval.padStart(2, '0')}
+            <SlotCounter
+              value={interval.padStart(2, '0')}
+              sequentialAnimationMode
+              autoAnimationStart={false}
+            />
           </span>
         ))}
       </p>
