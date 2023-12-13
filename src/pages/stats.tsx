@@ -52,7 +52,6 @@ const Stats = () => {
     return;
   }
 
-  debugger;
   return (
     <section className="h-full">
       {status !== 'authenticated' || isLoading || isSaving || !data || !data.pages[0] ? (
