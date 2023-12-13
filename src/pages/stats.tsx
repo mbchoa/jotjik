@@ -2,17 +2,22 @@ import Loader from '@/components/Loader';
 import RecordList from '@/components/RecordList';
 import { TimerContext } from '@/contexts/TimerContext';
 import { trpc } from '@/utils/api';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
 import type { Session } from 'types';
 
 const Stats = () => {
+  const router = useRouter();
+  const { status } = useSession();
   const { data, isLoading, refetch, hasNextPage, fetchNextPage, isFetchingNextPage } =
     trpc.timedSessions.getInfiniteTimedSessions.useInfiniteQuery(
       {
         limit: 10,
       },
       {
+        enabled: status === 'authenticated',
         getNextPageParam: (lastPage) => lastPage.nextCursor,
       }
     );
@@ -26,36 +31,43 @@ const Stats = () => {
   const { resumeFromLocalStorage } = useContext(TimerContext);
 
   useEffect(() => {
-    if (localStorage.getItem('preAuthTimerProgress')) {
+    if (status === 'authenticated' && localStorage.getItem('preAuthTimerProgress')) {
       resumeFromLocalStorage();
     }
-  }, [resumeFromLocalStorage]);
+  }, [resumeFromLocalStorage, status]);
 
   useEffect(() => {
     async function saveQueuedSession(session: Session) {
       await saveSession(session);
     }
     const queuedSessionString = localStorage.getItem('queuedSession');
-    if (queuedSessionString !== null) {
+    if (status === 'authenticated' && queuedSessionString !== null) {
       const queuedSession = JSON.parse(queuedSessionString) as Session;
       void saveQueuedSession(queuedSession);
     }
-  }, [saveSession]);
+  }, [saveSession, status]);
+
+  if (status === 'unauthenticated') {
+    void router.push('/api/auth/signin?callbackUrl=%2Fstats');
+    return;
+  }
 
   return (
     <section className="h-full">
-      <Link
-        href="/"
-        className="mb-4 block before:mr-2 before:text-lg before:leading-5 before:content-['←']"
-      >
-        Back
-      </Link>
-      {isLoading || isSaving || !data || !data.pages[0] ? (
+      {status !== 'authenticated' || isLoading || isSaving || !data || !data.pages[0] ? (
         <div className="flex h-full items-center justify-center">
           <Loader className="h-10 w-10 text-pink-900" />
         </div>
       ) : (
-        <RecordList sessions={data.pages.flatMap((page) => page.timedSessions)} />
+        <>
+          <Link
+            href="/"
+            className="mb-4 block before:mr-2 before:text-lg before:leading-5 before:content-['←']"
+          >
+            Back
+          </Link>
+          <RecordList sessions={data.pages.flatMap((page) => page.timedSessions)} />
+        </>
       )}
       {hasNextPage && (
         <button
@@ -68,34 +80,5 @@ const Stats = () => {
     </section>
   );
 };
-
-// export async function getServerSideProps(context: GetServerSidePropsContext) {
-//   const session = await getServerSession(context.req, context.res, authOptions);
-
-//   if (!session) {
-//     return {
-//       redirect: {
-//         destination: '/api/auth/signin?callbackUrl=%2Fstats',
-//         permanent: false,
-//       },
-//     };
-//   }
-
-//   const helpers = createServerSideHelpers({
-//     router: appRouter,
-//     ctx: createInnerTRPCContext({ session }),
-//     transformer: superjson,
-//   });
-
-//   await helpers.timedSessions.getInfiniteTimedSessions.prefetchInfinite({
-//     limit: 10,
-//   });
-
-//   return {
-//     props: {
-//       trpcState: helpers.dehydrate(),
-//     },
-//   };
-// }
 
 export default Stats;
