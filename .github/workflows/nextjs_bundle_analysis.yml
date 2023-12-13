@@ -56,6 +56,11 @@ jobs:
       - name: Build next.js app
         # change this if your site requires a custom build command
         run: ./node_modules/.bin/next build
+        env:
+          DATABASE_URL: placeholder-db-url
+          NEXTAUTH_SECRET: placeholder-nextauth-secret
+          GOOGLE_CLIENT_ID: placeholder-google-client-id
+          GOOGLE_CLIENT_SECRET: placeholder-google-client-secret
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
