@@ -26,9 +26,13 @@ const Record = ({ date, eventKey, sessions, totalTime }: IRecordProps) => {
         <span className="group flex justify-between">
           <span>
             <span className="block text-xs">Total Time</span>
-            <span className="block text-lg">
+            <span className="block text-lg min-w-[74px]">
               <Timestamp hours={totalHours} minutes={totalMinutes} seconds={totalSeconds} />
             </span>
+          </span>
+          <span>
+            <span className="block text-xs">Sessions</span>
+            <span className="block text-lg text-center">{sessions.length}</span>
           </span>
           <Chevron direction={eventKey === activeEventKey ? Direction.Up : Direction.Down} />
         </span>
