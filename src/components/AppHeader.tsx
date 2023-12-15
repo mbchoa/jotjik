@@ -1,3 +1,5 @@
+'use client';
+
 import { TimerContext } from '@/contexts/TimerContext';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';

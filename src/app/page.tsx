@@ -1,14 +1,16 @@
-import { trpc } from '@/utils/api';
+'use client';
+
+import Timer from '@/components/Timer';
+import { api } from '@/trpc/react';
 import { format } from 'date-fns';
 import { signIn, useSession } from 'next-auth/react';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
-import Timer from '../components/Timer';
 
 const Home = () => {
   const { data: session } = useSession();
   const { mutateAsync: saveSession, isLoading: isSaving } =
-    trpc.timedSessions.saveTimedSession.useMutation();
+    api.timedSessions.saveTimedSession.useMutation();
 
   const currentTime = Date.now();
   const dayTokens = format(currentTime, 'do').split(/(\d+)/).slice(1);
