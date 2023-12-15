@@ -5,6 +5,7 @@ import '@/styles/globals.css';
 import { TRPCReactProvider } from '@/trpc/react';
 import { cookies } from 'next/headers';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function RootLayout({
   // Layouts must accept a children prop.
