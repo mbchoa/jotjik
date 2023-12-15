@@ -42,14 +42,14 @@ export default function RootLayout({
               <AppHeader />
               <main className="flex max-w-screen-sm sm:max-w-none select-none flex-col p-4">
                 {children}
+                <ToastContainer
+                  position="bottom-center"
+                  autoClose={2000}
+                  hideProgressBar
+                  closeOnClick
+                />
               </main>
               <AppFooter />
-              <ToastContainer
-                position="bottom-center"
-                autoClose={2000}
-                hideProgressBar
-                closeOnClick
-              />
             </div>
           </AppProvider>
         </TRPCReactProvider>
