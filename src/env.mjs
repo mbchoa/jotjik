@@ -21,7 +21,7 @@ export const env = createEnv({
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
-    VERCEL_URL: z.string().url().optional(),
+    VERCEL_URL: z.string().optional(),
     PORT: z.string().optional(),
   },
 
