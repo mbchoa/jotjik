@@ -1,6 +1,5 @@
 import 'server-only';
 
-import { env } from '@/env.mjs';
 import { appRouter, type AppRouter } from '@/server/api/root';
 import { createTRPCContext } from '@/server/api/trpc';
 import { createTRPCProxyClient, loggerLink, TRPCClientError } from '@trpc/client';
@@ -28,7 +27,8 @@ export const api = createTRPCProxyClient<AppRouter>({
   links: [
     loggerLink({
       enabled: (op) =>
-        env.NODE_ENV === 'development' || (op.direction === 'down' && op.result instanceof Error),
+        process.env.NODE_ENV === 'development' ||
+        (op.direction === 'down' && op.result instanceof Error),
     }),
     /**
      * Custom RSC link that lets us invoke procedures without using http requests. Since Server
