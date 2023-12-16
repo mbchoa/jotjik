@@ -1,10 +1,12 @@
+'use client';
+
 import Loader from '@/components/Loader';
 import RecordList from '@/components/RecordList';
 import { TimerContext } from '@/contexts/TimerContext';
-import { trpc } from '@/utils/api';
+import { api } from '@/trpc/react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useContext, useEffect } from 'react';
 import type { Session } from 'types';
 
@@ -12,7 +14,7 @@ const Stats = () => {
   const router = useRouter();
   const { status } = useSession();
   const { data, isLoading, refetch, hasNextPage, fetchNextPage, isFetchingNextPage } =
-    trpc.timedSessions.getInfiniteTimedSessions.useInfiniteQuery(
+    api.timedSessions.getInfiniteTimedSessions.useInfiniteQuery(
       {
         limit: 10,
       },
@@ -22,7 +24,7 @@ const Stats = () => {
       }
     );
   const { mutateAsync: saveSession, isLoading: isSaving } =
-    trpc.timedSessions.saveTimedSession.useMutation({
+    api.timedSessions.saveTimedSession.useMutation({
       onSuccess: async () => {
         localStorage.removeItem('queuedSession');
         await refetch();
