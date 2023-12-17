@@ -3,7 +3,6 @@ import AppHeader from '@/components/AppHeader';
 import { AppProvider } from '@/components/AppProvider';
 import '@/styles/globals.css';
 import { TRPCReactProvider } from '@/trpc/react';
-import { cookies } from 'next/headers';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -36,7 +35,7 @@ export default function RootLayout({
         <meta property="og:image" content="https://jotjik.vercel.app/alarm-clock.png" />
       </head>
       <body>
-        <TRPCReactProvider cookies={cookies().toString()}>
+        <TRPCReactProvider>
           <AppProvider>
             <div className="grid-rows-hamburger grid h-screen">
               <AppHeader />

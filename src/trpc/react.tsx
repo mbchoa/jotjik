@@ -9,7 +9,7 @@ import { getUrl, transformer } from './shared';
 
 export const api = createTRPCReact<AppRouter>();
 
-export function TRPCReactProvider(props: { children: React.ReactNode; cookies: string }) {
+export function TRPCReactProvider(props: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
 
   const [trpcClient] = useState(() =>
@@ -24,10 +24,9 @@ export function TRPCReactProvider(props: { children: React.ReactNode; cookies: s
         unstable_httpBatchStreamLink({
           url: getUrl(),
           headers() {
-            return {
-              cookie: props.cookies,
-              'x-trpc-source': 'react',
-            };
+            const headers = new Map(new Headers());
+            headers.set('x-trpc-source', 'react');
+            return Object.fromEntries(headers);
           },
         }),
       ],
