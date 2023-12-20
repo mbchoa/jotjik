@@ -1,5 +1,5 @@
-import { timedSessionsRouter } from "@/server/api/routers/timedSessions";
-import { createTRPCRouter } from "@/server/api/trpc";
+import { timedSessionsRouter } from '@/server/api/routers/timedSessions';
+import { createTRPCRouter } from '@/server/api/trpc';
 
 /**
  * This is the primary router for your server.

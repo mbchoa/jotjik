@@ -1,4 +1,5 @@
 import Loader from '@/components/Loader';
+import { MetricCard } from '@/components/MetricCard';
 import RecordList from '@/components/RecordList';
 import { TimerContext } from '@/contexts/TimerContext';
 import { trpc } from '@/utils/api';
@@ -66,7 +67,10 @@ const Stats = () => {
           >
             Back
           </Link>
-          <RecordList sessions={data.pages.flatMap((page) => page.timedSessions)} />
+          <div className="space-y-4">
+            <MetricCard />
+            <RecordList sessions={data.pages.flatMap((page) => page.timedSessions)} />
+          </div>
         </>
       )}
       {hasNextPage && (
