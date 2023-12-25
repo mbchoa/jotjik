@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 
 export interface ITimerContext {
   isRunning: boolean;
@@ -80,6 +80,35 @@ export const TimerProvider = ({ children }: { children: React.ReactNode }) => {
       }, 10);
 
       localStorage.removeItem('preAuthTimerProgress');
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.stopImmediatePropagation();
+      if (duration > 0) {
+        pause();
+        localStorage.setItem('inProgress', JSON.stringify({ startedAt, duration }));
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [duration, isRunning, pause, startedAt]);
+
+  useEffect(() => {
+    const inProgressSession = localStorage.getItem('inProgress');
+    if (inProgressSession) {
+      const { startedAt, duration } = JSON.parse(inProgressSession) as {
+        startedAt: string;
+        duration: number;
+      };
+      setStartedAt(startedAt);
+      setDuration(duration);
+      localStorage.removeItem('inProgress');
     }
   }, []);
 
