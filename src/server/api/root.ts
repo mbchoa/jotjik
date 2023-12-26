@@ -1,3 +1,4 @@
+import { streaksRouter } from '@/server/api/routers/streaks';
 import { timedSessionsRouter } from '@/server/api/routers/timedSessions';
 import { createTRPCRouter } from '@/server/api/trpc';
 
@@ -8,6 +9,7 @@ import { createTRPCRouter } from '@/server/api/trpc';
  */
 export const appRouter = createTRPCRouter({
   timedSessions: timedSessionsRouter,
+  streaks: streaksRouter,
 });
 
 // export type definition of API
