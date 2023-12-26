@@ -29,7 +29,7 @@ export const StreakCard = () => {
           {streakBubbles}
           {emptyBubbles}
         </Flex>
-        {numStreak === 0 && <Text className="text-center">Start a new streak!</Text>}
+        {numStreak === 0 && <Text className="text-center ">Start a new streak!</Text>}
         {numStreak > 1 && (
           <Text className="text-center">You&apos;re on a {numStreak} day streak! Keep it up!</Text>
         )}
@@ -41,7 +41,7 @@ export const StreakCard = () => {
 function EmptyState({ text }: { text?: string }) {
   return (
     <div className="flex items-center justify-center bg-pink-100 w-9 h-9 rounded-full">
-      <Text className="text-[10px]">{text}</Text>
+      <span className="text-tremor-content text-[10px]">{text}</span>
     </div>
   );
 }
