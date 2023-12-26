@@ -29,8 +29,8 @@ export const StreakCard = () => {
           {streakBubbles}
           {emptyBubbles}
         </Flex>
-        {!includeDate && <Text className="text-center">Start a new streak!</Text>}
-        {numStreak > 0 && (
+        {numStreak === 0 && <Text className="text-center">Start a new streak!</Text>}
+        {numStreak > 1 && (
           <Text className="text-center">You&apos;re on a {numStreak} day streak! Keep it up!</Text>
         )}
       </div>
