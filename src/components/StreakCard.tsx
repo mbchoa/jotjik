@@ -1,33 +1,54 @@
+import { trpc } from '@/utils/api';
 import { Flex, Text } from '@tremor/react';
-import { type SVGProps } from 'react';
+import { add, format } from 'date-fns';
+import { useMemo, type SVGProps } from 'react';
 import { Card } from './Card';
 
 export const StreakCard = () => {
+  const date = useMemo(() => new Date().toISOString(), []);
+  const { data } = trpc.streaks.getStreakFromDate.useQuery({
+    date,
+  });
+
+  const numStreak = data?.streakCount ?? 0;
+  const includeDate = data?.includeDate ?? false;
+
+  const streakBubbles = Array.from({ length: numStreak }, (_, key) => {
+    return <CompletedState key={key} />;
+  });
+  const emptyBubbles = Array.from({ length: 7 - numStreak }, (_, key) => {
+    const text = format(add(new Date(), { days: includeDate ? key + 1 : key }), 'M/d');
+    return <EmptyState key={key} text={text} />;
+  });
+
   return (
     <Card>
       <div className="space-y-4">
         <Text>Daily Streak</Text>
         <Flex justifyContent="between" alignItems="center">
-          <EmptyState />
-          <CompletedState />
-          <CompletedState />
-          <CompletedState />
-          <EmptyState />
-          <EmptyState />
+          {streakBubbles}
+          {emptyBubbles}
         </Flex>
-        <Text className="text-center">Start a new streak!</Text>
+        {!includeDate && <Text className="text-center">Start a new streak!</Text>}
+        {numStreak > 0 && (
+          <Text className="text-center">You&apos;re on a {numStreak} day streak! Keep it up!</Text>
+        )}
       </div>
     </Card>
   );
 };
 
-function EmptyState() {
-  return <div className="flex items-center justify-center bg-pink-100 w-8 h-8 rounded-full" />;
+function EmptyState({ text }: { text?: string }) {
+  return (
+    <div className="flex items-center justify-center bg-pink-100 w-9 h-9 rounded-full">
+      <Text className="text-[10px]">{text}</Text>
+    </div>
+  );
 }
 
 function CompletedState() {
   return (
-    <div className="flex items-center justify-center bg-yellow-400 w-8 h-8 rounded-full">
+    <div className="flex items-center justify-center bg-yellow-400 w-9 h-9 rounded-full">
       <StarIcon className="w-5 h-5 text-pink-400" />
     </div>
   );

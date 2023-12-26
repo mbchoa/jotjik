@@ -1,4 +1,5 @@
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
+import { isSameDay } from 'date-fns';
 import { z } from 'zod';
 
 export const streaksRouter = createTRPCRouter({
@@ -16,6 +17,7 @@ export const streaksRouter = createTRPCRouter({
       // Fetch all records sorted by startedAt in descending order
       const sessions = await ctx.prisma.timedSessions.findMany({
         where: {
+          userId: ctx.session.user.id,
           startedAt: {
             lte: date,
           },
@@ -26,7 +28,10 @@ export const streaksRouter = createTRPCRouter({
       });
 
       if (sessions.length === 0) {
-        return 0;
+        return {
+          streakCount: 0,
+          includeDate: false,
+        };
       }
 
       let count = 0;
@@ -49,6 +54,11 @@ export const streaksRouter = createTRPCRouter({
         }
       }
 
-      return count;
+      return {
+        streakCount: count,
+        includeDate: sessions[0]
+          ? isSameDay(new Date(date), new Date(sessions[0].startedAt))
+          : false,
+      };
     }),
 });
