@@ -1,6 +1,15 @@
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
-import { isSameDay } from 'date-fns';
+import { addDays, isEqual, isSameDay, startOfDay } from 'date-fns';
 import { z } from 'zod';
+
+function isConsecutive(dateLeft: Date, dateRight: Date) {
+  const startDateLeft = startOfDay(dateLeft);
+  const startDateRight = startOfDay(dateRight);
+
+  const dayAfterLeft = addDays(startDateLeft, 1);
+
+  return isEqual(dayAfterLeft, startDateRight);
+}
 
 export const streaksRouter = createTRPCRouter({
   getStreakFromDate: protectedProcedure
@@ -11,11 +20,10 @@ export const streaksRouter = createTRPCRouter({
     )
     .query(async ({ input, ctx }) => {
       const { date } = input;
-      // Parse the starting date
-      let previousDate = new Date(date).getTime();
 
       // Fetch all records sorted by startedAt in descending order
       const sessions = await ctx.prisma.timedSessions.findMany({
+        take: 7,
         where: {
           userId: ctx.session.user.id,
           startedAt: {
@@ -27,7 +35,7 @@ export const streaksRouter = createTRPCRouter({
         },
       });
 
-      if (sessions.length === 0) {
+      if (sessions.length === 0 || !sessions[0]) {
         return {
           streakCount: 0,
           includeDate: false,
@@ -35,21 +43,29 @@ export const streaksRouter = createTRPCRouter({
       }
 
       let count = 0;
+      let sessionsToCheck = sessions;
 
-      for (let i = 0; i < sessions.length; i++) {
-        const session = sessions[i];
+      let currentDate = new Date('2023-12-26T22:51:25.794Z');
+      const previousDate = new Date(sessions[0].startedAt);
+
+      if (isSameDay(previousDate, currentDate)) {
+        count++;
+        currentDate = previousDate;
+        sessionsToCheck = sessions.slice(1);
+      }
+
+      for (let i = 0; i < sessionsToCheck.length; i++) {
+        const session = sessionsToCheck[i];
         if (!session) {
           break;
         }
 
-        const currentDate = new Date(session.startedAt).getTime();
-        const diffTime = Math.abs(previousDate - currentDate);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const previousDate = new Date(session.startedAt);
 
-        if (diffDays === 1) {
+        if (isConsecutive(previousDate, currentDate)) {
           count++;
-          previousDate = currentDate;
-        } else if (diffDays > 1) {
+          currentDate = previousDate;
+        } else {
           break;
         }
       }

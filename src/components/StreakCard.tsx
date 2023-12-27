@@ -6,6 +6,7 @@ import { Card } from './Card';
 
 export const StreakCard = () => {
   const date = useMemo(() => new Date().toISOString(), []);
+  console.log(date);
   const { data } = trpc.streaks.getStreakFromDate.useQuery({
     date,
   });
