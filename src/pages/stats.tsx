@@ -4,7 +4,6 @@ import { StreakCard } from '@/components/StreakCard';
 import { TimerContext } from '@/contexts/TimerContext';
 import { trpc } from '@/utils/api';
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
 import type { Session } from 'types';
@@ -60,19 +59,11 @@ const Stats = () => {
           <Loader className="h-10 w-10 text-pink-900" />
         </div>
       ) : (
-        <>
-          <Link
-            href="/"
-            className="mb-4 block before:mr-2 before:text-lg before:leading-5 before:content-['←']"
-          >
-            Back
-          </Link>
-          <div className="space-y-4">
-            <StreakCard />
-            {/* <MetricCard /> */}
-            <RecordList sessions={data.pages.flatMap((page) => page.timedSessions)} />
-          </div>
-        </>
+        <div className="space-y-4">
+          <StreakCard />
+          {/* <MetricCard /> */}
+          <RecordList sessions={data.pages.flatMap((page) => page.timedSessions)} />
+        </div>
       )}
       {hasNextPage && (
         <button
