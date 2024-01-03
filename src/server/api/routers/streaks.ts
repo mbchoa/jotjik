@@ -1,5 +1,5 @@
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
-import { addDays, isEqual, isSameDay, startOfDay } from 'date-fns';
+import { addDays, isEqual, isSameDay, startOfDay, subDays } from 'date-fns';
 import { z } from 'zod';
 
 function isConsecutive(dateLeft: Date, dateRight: Date) {
@@ -23,11 +23,11 @@ export const streaksRouter = createTRPCRouter({
 
       // Fetch all records sorted by startedAt in descending order
       const sessions = await ctx.prisma.timedSessions.findMany({
-        take: 7,
         where: {
           userId: ctx.session.user.id,
           startedAt: {
             lte: date,
+            gt: subDays(new Date(date), 7),
           },
         },
         orderBy: {
