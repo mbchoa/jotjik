@@ -66,7 +66,7 @@ export const streaksRouter = createTRPCRouter({
       }
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      const dedupedSessions = uniqBy<TimedSessions>(sessions, (session: TimedSessions): number => {
+      const dedupedSessions = uniqBy(sessions, (session: TimedSessions): number => {
         const date = new Date(session.startedAt);
         date.setUTCHours(0, 0, 0, 0);
         return date.valueOf();
