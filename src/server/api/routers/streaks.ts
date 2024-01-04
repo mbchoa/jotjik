@@ -1,8 +1,21 @@
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
 import type { TimedSessions } from '@prisma/client';
-import { isSameDay, startOfDay, subDays } from 'date-fns';
+import { subDays } from 'date-fns';
 import { uniqBy } from 'lodash';
 import { z } from 'zod';
+
+function isSameDay(dateLeft: Date, dateRight: Date) {
+  // Convert the date strings to Date objects
+  const date1 = new Date(dateLeft);
+  const date2 = new Date(dateRight);
+
+  // Normalize the dates to the start of the day (midnight)
+  date1.setUTCHours(0, 0, 0, 0);
+  date2.setUTCHours(0, 0, 0, 0);
+
+  // Check if the dates are equal
+  return date1.getTime() === date2.getTime();
+}
 
 function isConsecutive(dateLeft: Date, dateRight: Date) {
   // Convert the date strings to Date objects
@@ -54,19 +67,21 @@ export const streaksRouter = createTRPCRouter({
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       const dedupedSessions = uniqBy<TimedSessions>(sessions, (session: TimedSessions): number => {
-        return startOfDay(new Date(session.startedAt)).getTime();
+        const date = new Date(session.startedAt);
+        date.setUTCHours(0, 0, 0, 0);
+        return date.valueOf();
       }) as TimedSessions[];
 
       let count = 0;
       let sessionsToCheck = dedupedSessions;
 
       let currentDate = new Date(date);
-      const previousDate = new Date(sessions[0].startedAt);
+      const previousDate = sessionsToCheck[0] ? new Date(sessionsToCheck[0].startedAt) : new Date();
 
       if (isSameDay(previousDate, currentDate)) {
         count++;
         currentDate = previousDate;
-        sessionsToCheck = sessions.slice(1);
+        sessionsToCheck = sessionsToCheck.slice(1);
       }
 
       for (let i = 0; i < sessionsToCheck.length; i++) {
