@@ -26,12 +26,12 @@ function isConsecutive(dateLeft: Date, dateRight: Date) {
   date1.setUTCHours(0, 0, 0, 0);
   date2.setUTCHours(0, 0, 0, 0);
 
-  // Calculate the difference in days
-  const diffInTime = date2.valueOf() - date1.valueOf();
-  const diffInDays = diffInTime / (1000 * 3600 * 24);
-
-  // Check if the difference is exactly 1 day
-  return diffInDays === 1;
+  // Check if the months are equal and the days differ by exactly 1
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() - date2.getDate() === 1
+  );
 }
 
 export const streaksRouter = createTRPCRouter({
