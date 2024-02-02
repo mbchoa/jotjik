@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "pnpm run db:generate && next build",
+    "build": "pnpm run db:deploy && pnpm run db:generate && next build",
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
