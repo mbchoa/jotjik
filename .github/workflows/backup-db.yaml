@@ -29,7 +29,7 @@ jobs:
         run: |
           TIMESTAMP=$(date +%Y-%m-%d_%H%M%S)
           DUMP_DIR="dump"
-          TAR_FILE="$DUMP_DIR.tar.gz"
+          TAR_FILE="$DUMP_DIR_$TIMESTAMP.tar.gz"
 
           # Dump the database into a directory
           pg_dump -j 8 --no-owner --no-privileges -Fd -d $DATABASE_URL -f $DUMP_DIR
