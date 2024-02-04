@@ -48,3 +48,9 @@ credentials.json
 terraform.tfvars
 terraform.tfstate
 terraform.tfstate.backup
+
+# files
+*.tar
+
+# folders
+dump
