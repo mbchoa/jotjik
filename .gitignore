@@ -40,3 +40,11 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# terraform
+.terraform
+.terraform.lock.hcl
+credentials.json
+terraform.tfvars
+terraform.tfstate
+terraform.tfstate.backup
