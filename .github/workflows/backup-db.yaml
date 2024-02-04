@@ -1,0 +1,44 @@
+name: Scheduled Database Backup
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # Runs every day at 2 AM UTC.
+  workflow_dispatch:  # Allows manual triggering of the workflow.
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    container:
+      image: postgres:15.2
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - id: 'auth'  
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Database Backup and Upload to GCS
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+        run: |
+          TIMESTAMP=$(date +%Y-%m-%d_%H%M%S)
+          DUMP_DIR="dump"
+          TAR_FILE="$DUMP_DIR.tar.gz"
+
+          # Dump the database into a directory
+          pg_dump -j 8 --no-owner --no-privileges -Fd -d $DATABASE_URL -f $DUMP_DIR
+
+          # Compress the directory
+          tar -czvf $TAR_FILE $DUMP_DIR
+
+          # Upload the gzipped file to Cloud Storage
+          gsutil cp $TAR_FILE gs://$BUCKET_NAME/
+
+          # Cleanup
+          rm -rf $DUMP_DIR $TAR_FILE
