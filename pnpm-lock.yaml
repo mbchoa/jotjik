@@ -86,8 +86,8 @@ devDependencies:
     specifier: ^4.14.202
     version: 4.14.202
   '@types/node':
-    specifier: ^20.10.5
-    version: 20.10.5
+    specifier: ^20.11.25
+    version: 20.11.25
   '@types/prettier':
     specifier: ^2.7.3
     version: 2.7.3
@@ -132,7 +132,7 @@ devDependencies:
     version: 3.3.7
   trpc-playground:
     specifier: ^1.0.4
-    version: 1.0.4(@trpc/server@10.44.1)(@types/node@20.10.5)(typescript@5.3.3)(zod@3.22.4)
+    version: 1.0.4(@trpc/server@10.44.1)(@types/node@20.11.25)(typescript@5.3.3)(zod@3.22.4)
   typescript:
     specifier: ^5.3.3
     version: 5.3.3
@@ -777,10 +777,10 @@ packages:
       - tailwindcss
     dev: false
 
-  /@trpc-playground/html@1.0.4(@types/node@20.10.5):
+  /@trpc-playground/html@1.0.4(@types/node@20.11.25):
     resolution: {integrity: sha512-HVnqaUXxEJJcrAHvVgivwtZFqTE6NNxXxrXEnd+rCxun97xnZknwdiTxq69wQEsZYxPrgtwPmO/nAEZL8AReWg==}
     dependencies:
-      vite: 4.5.2(@types/node@20.10.5)
+      vite: 4.5.2(@types/node@20.11.25)
       xss: 1.0.14
     transitivePeerDependencies:
       - '@types/node'
@@ -917,8 +917,8 @@ packages:
     resolution: {integrity: sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==}
     dev: true
 
-  /@types/node@20.10.5:
-    resolution: {integrity: sha512-nNPsNE65wjMxEKI93yOP+NPGGBJz/PoN3kZsVLee0XMiJolxSekEVD8wRwBUBqkwc7UWop0edW50yrCQW4CyRw==}
+  /@types/node@20.11.25:
+    resolution: {integrity: sha512-TBHyJxk2b7HceLVGFcpAUjsa5zIdsPWlR6XHfyGzd0SFu+/NFgQgMAl96MSDZgQDvJAvV6BKsFOrt6zIL09JDw==}
     dependencies:
       undici-types: 5.26.5
     dev: true
@@ -3681,13 +3681,13 @@ packages:
     dependencies:
       is-number: 7.0.0
 
-  /trpc-playground@1.0.4(@trpc/server@10.44.1)(@types/node@20.10.5)(typescript@5.3.3)(zod@3.22.4):
+  /trpc-playground@1.0.4(@trpc/server@10.44.1)(@types/node@20.11.25)(typescript@5.3.3)(zod@3.22.4):
     resolution: {integrity: sha512-6nVf1o2LNoo1g6oTS24yajoH7xV4CFjxGAbAH7qLXqa3yo9qB5QHsWLbrm1hNt51SyCG++P0zHJaCdVfgvEVDg==}
     peerDependencies:
       '@trpc/server': ^10
       zod: ^3
     dependencies:
-      '@trpc-playground/html': 1.0.4(@types/node@20.10.5)
+      '@trpc-playground/html': 1.0.4(@types/node@20.11.25)
       '@trpc-playground/types': 1.0.0(@trpc/server@10.44.1)(typescript@5.3.3)
       '@trpc/server': 10.44.1
       lodash: 4.17.21
@@ -3888,7 +3888,7 @@ packages:
       d3-timer: 3.0.1
     dev: false
 
-  /vite@4.5.2(@types/node@20.10.5):
+  /vite@4.5.2(@types/node@20.11.25):
     resolution: {integrity: sha512-tBCZBNSBbHQkaGyhGCDUGqeo2ph8Fstyp6FMSvTtsXeZSPpSMGlviAOav2hxVTqFcx8Hj/twtWKsMJXNY0xI8w==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -3916,7 +3916,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 20.10.5
+      '@types/node': 20.11.25
       esbuild: 0.18.20
       postcss: 8.4.32
       rollup: 3.29.4
