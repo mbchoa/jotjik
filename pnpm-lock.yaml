@@ -780,7 +780,7 @@ packages:
   /@trpc-playground/html@1.0.4(@types/node@20.10.5):
     resolution: {integrity: sha512-HVnqaUXxEJJcrAHvVgivwtZFqTE6NNxXxrXEnd+rCxun97xnZknwdiTxq69wQEsZYxPrgtwPmO/nAEZL8AReWg==}
     dependencies:
-      vite: 4.5.2(@types/node@20.10.5)
+      vite: 4.5.3(@types/node@20.10.5)
       xss: 1.0.14
     transitivePeerDependencies:
       - '@types/node'
@@ -3888,8 +3888,8 @@ packages:
       d3-timer: 3.0.1
     dev: false
 
-  /vite@4.5.2(@types/node@20.10.5):
-    resolution: {integrity: sha512-tBCZBNSBbHQkaGyhGCDUGqeo2ph8Fstyp6FMSvTtsXeZSPpSMGlviAOav2hxVTqFcx8Hj/twtWKsMJXNY0xI8w==}
+  /vite@4.5.3(@types/node@20.10.5):
+    resolution: {integrity: sha512-kQL23kMeX92v3ph7IauVkXkikdDRsYMGTVl5KY2E9OY4ONLvkHf04MDTbnfo6NKxZiDLWzVpP5oTa8hQD8U3dg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
