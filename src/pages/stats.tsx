@@ -14,7 +14,7 @@ const Stats = () => {
   const { data, isLoading, refetch, hasNextPage, fetchNextPage, isFetchingNextPage } =
     trpc.timedSessions.getInfiniteTimedSessions.useInfiniteQuery(
       {
-        limit: 10,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       },
       {
         enabled: status === 'authenticated',
