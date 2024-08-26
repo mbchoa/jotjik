@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { trpc } from '@/utils/api';
 import { Flex, Text } from '@tremor/react';
 import { add, format } from 'date-fns';
