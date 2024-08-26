@@ -1,6 +1,6 @@
 import Loader from '@/components/Loader';
+import { MetricCard } from '@/components/MetricCard';
 import RecordList from '@/components/RecordList';
-import { StreakCard } from '@/components/StreakCard';
 import { TimerContext } from '@/contexts/TimerContext';
 import { trpc } from '@/utils/api';
 import { useSession } from 'next-auth/react';
@@ -60,8 +60,7 @@ const Stats = () => {
         </div>
       ) : (
         <div className="space-y-4">
-          <StreakCard />
-          {/* <MetricCard /> */}
+          <MetricCard />
           <RecordList sessions={data.pages.flatMap((page) => page.timedSessions)} />
         </div>
       )}
