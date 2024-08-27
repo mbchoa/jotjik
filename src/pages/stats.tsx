@@ -1,5 +1,5 @@
 import Loader from '@/components/Loader';
-import { MetricCard } from '@/components/MetricCard';
+import { MetricsSection } from '@/components/MetricsSection';
 import RecordList from '@/components/RecordList';
 import { TimerContext } from '@/contexts/TimerContext';
 import { trpc } from '@/utils/api';
@@ -60,7 +60,7 @@ const Stats = () => {
         </div>
       ) : (
         <div className="space-y-4">
-          <MetricCard />
+          <MetricsSection />
           <RecordList sessions={data.pages.flatMap((page) => page.timedSessions)} />
         </div>
       )}

@@ -1,11 +1,15 @@
 import { Card } from '@/components/Card';
-import { trpc } from '@/utils/api';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { Flex, Icon, Metric, ProgressBar, Text } from '@tremor/react';
 
-export const MetricCard = () => {
-  const { data: allTimedSessions, isLoading } = trpc.timedSessions.getAllTimedSessions.useQuery();
+interface IMetricCardProps {
+  label: string;
+  metric: string;
+  isLoading: boolean;
+  hasError?: boolean;
+}
 
+export const MetricCard = ({ label, metric, isLoading, hasError = false }: IMetricCardProps) => {
   if (isLoading) {
     return (
       <Card>
@@ -23,7 +27,7 @@ export const MetricCard = () => {
     );
   }
 
-  if (!allTimedSessions) {
+  if (hasError) {
     return (
       <Card>
         <Flex flexDirection="col">
@@ -34,12 +38,10 @@ export const MetricCard = () => {
     );
   }
 
-  const totalDurationInMs = allTimedSessions.reduce((acc, { duration }) => acc + duration, 0);
-  const totalDurationInHours = totalDurationInMs / 1000 / 60 / 60;
   return (
     <Card>
-      <Text>All Time</Text>
-      <Metric>{Math.round(totalDurationInHours)} H</Metric>
+      <Text>{label}</Text>
+      <Metric>{metric}</Metric>
     </Card>
   );
 };

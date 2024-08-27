@@ -1,3 +1,4 @@
+import { metricsRouter } from '@/server/api/routers/metrics';
 import { timedSessionsRouter } from '@/server/api/routers/timedSessions';
 import { createTRPCRouter } from '@/server/api/trpc';
 
@@ -8,6 +9,7 @@ import { createTRPCRouter } from '@/server/api/trpc';
  */
 export const appRouter = createTRPCRouter({
   timedSessions: timedSessionsRouter,
+  metrics: metricsRouter,
 });
 
 // export type definition of API
