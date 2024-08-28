@@ -1,6 +1,14 @@
 import { trpc } from '@/utils/api';
 import { MetricCard } from './MetricCard';
 
+function formatTime(hours: number, minutes: number) {
+  if (hours === 0) {
+    return `${minutes} m`;
+  } else {
+    return `${hours} h ${minutes} m`;
+  }
+}
+
 export const MetricsSection = () => {
   const {
     data: totalTimeForYear,
@@ -26,13 +34,13 @@ export const MetricsSection = () => {
     <div className="flex gap-4">
       <MetricCard
         label="2024 Total"
-        metric={`${totalHh} h ${totalMm} m`}
+        metric={formatTime(totalHh, totalMm)}
         isLoading={isLoadingTotalTime}
         hasError={!isFetchedTotalTime && !totalTimeForYear}
       />
       <MetricCard
         label="30-Day Avg"
-        metric={`${last30DayAvgHh} h ${last30DayAvgMm} m`}
+        metric={formatTime(last30DayAvgHh, last30DayAvgMm)}
         isLoading={isLoadingLast30DayAverage}
         hasError={!isFetchedLast30DayAverage && !last30DayAverage}
       />
