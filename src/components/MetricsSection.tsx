@@ -25,18 +25,30 @@ export const MetricsSection = () => {
     isFetched: isFetchedLast30DayAverage,
   } = trpc.metrics.getLast30DaySessionAverage.useQuery();
 
+  const {
+    data: streak,
+    isLoading: isLoadingLongestStreak,
+    isFetched: isFetchedLongestStreak,
+  } = trpc.metrics.getLongestStreak.useQuery();
+
   const totalHh = totalTimeForYear?.totalHours ?? 0;
   const totalMm = totalTimeForYear?.totalMinutes ?? 0;
   const last30DayAvgHh = last30DayAverage?.avgHours ?? 0;
   const last30DayAvgMm = last30DayAverage?.avgMinutes ?? 0;
 
   return (
-    <div className="flex gap-4">
+    <div className="grid grid-cols-2 gap-4">
       <MetricCard
         label="2024 Total"
         metric={formatTime(totalHh, totalMm)}
         isLoading={isLoadingTotalTime}
         hasError={!isFetchedTotalTime && !totalTimeForYear}
+      />
+      <MetricCard
+        label="2024 Longest Streak"
+        metric={`${streak?.streakLength ?? 0}`}
+        isLoading={isLoadingLongestStreak}
+        hasError={!isFetchedLongestStreak && !streak}
       />
       <MetricCard
         label="30-Day Avg"

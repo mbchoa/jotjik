@@ -72,4 +72,65 @@ export const metricsRouter = createTRPCRouter({
       avgSeconds: result[0]?.avg_seconds ?? 0,
     };
   }),
+  getLongestStreak: protectedProcedure.query(async ({ ctx }) => {
+    const sqlQuery = Prisma.sql`
+        WITH daily_sessions AS (
+          -- Get the distinct dates for the user's sessions
+          SELECT DISTINCT
+            DATE("startedAt") AS session_date
+          FROM
+            "TimedSessions"
+          WHERE
+            "userId" = ${ctx.session.user.id}
+            AND EXTRACT(YEAR FROM "startedAt") = EXTRACT(YEAR FROM CURRENT_DATE)
+        ),
+        numbered_dates AS (
+          -- Number the dates sequentially
+          SELECT
+            session_date,
+            session_date - (ROW_NUMBER() OVER (ORDER BY session_date) * INTERVAL '1 day') AS group_date
+          FROM
+            daily_sessions
+        ),
+        streaks AS (
+          -- Group the consecutive dates
+          SELECT
+            MIN(session_date) AS streak_start,
+            MAX(session_date) AS streak_end,
+            COUNT(*) AS streak_length
+          FROM
+            numbered_dates
+          GROUP BY
+            group_date
+        )
+        -- Select the longest streak
+        SELECT
+          streak_start,
+          streak_end,
+          streak_length
+        FROM
+          streaks
+        ORDER BY
+          streak_length DESC
+        LIMIT 1;
+      `;
+
+    const result = await ctx.prisma.$queryRaw<
+      {
+        streak_start: number;
+        streak_end: number;
+        streak_length: number;
+      }[]
+    >(sqlQuery);
+
+    if (result.length === 0) {
+      return { streakStart: null, streakEnd: null, streakLength: 0 };
+    }
+
+    return {
+      streakStart: result[0]?.streak_start ?? null,
+      streakEnd: result[0]?.streak_end ?? null,
+      streakLength: result[0]?.streak_length ?? 0,
+    };
+  }),
 });
