@@ -29,7 +29,7 @@ const Layout = ({ children }: ILayoutProps) => (
       <meta property="og:image" content="https://jotjik.vercel.app/alarm-clock.png" />
     </Head>
     <AppHeader />
-    <main className="flex max-w-screen-sm sm:max-w-none select-none flex-col p-4">{children}</main>
+    <main className="flex max-w-screen-lg mx-auto w-full select-none flex-col p-4">{children}</main>
     <AppFooter />
   </div>
 );

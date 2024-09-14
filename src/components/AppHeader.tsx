@@ -14,8 +14,8 @@ const AppHeader = () => {
   }, [session, isRunning, startedAt, duration]);
 
   return (
-    <header className="flex bg-pink-900 px-4 text-white">
-      <div className="flex flex-1 items-center max-w-6xl m-auto">
+    <header className="flex bg-pink-900 text-white">
+      <div className="flex flex-1 items-center max-w-screen-lg mx-auto w-full px-4">
         <span className="inline-block text-2xl">
           <Link href="/">
             <span role="img" aria-label="Clock emoji">
