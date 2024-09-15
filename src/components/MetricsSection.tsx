@@ -37,7 +37,7 @@ export const MetricsSection = () => {
   const last30DayAvgMm = last30DayAverage?.avgMinutes ?? 0;
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-4 md:flex">
       <MetricCard
         label="2024 Total"
         metric={formatTime(totalHh, totalMm)}
