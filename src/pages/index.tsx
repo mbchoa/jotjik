@@ -1,19 +1,14 @@
 import { trpc } from '@/utils/api';
-import { format } from 'date-fns';
 import { signIn, useSession } from 'next-auth/react';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
 import Timer from '../components/Timer';
+import { ProfileCard } from '@/components/ProfileCard';
 
 const Home = () => {
   const { data: session } = useSession();
   const { mutateAsync: saveSession, isLoading: isSaving } =
     trpc.timedSessions.saveTimedSession.useMutation();
-
-  const currentTime = Date.now();
-  const dayTokens = format(currentTime, 'do').split(/(\d+)/).slice(1);
-  const month = format(currentTime, 'MMMM');
-  const year = format(currentTime, 'yyyy');
 
   const handleSaveTimedSession = useCallback(
     async (startedAt: string, duration: number) => {
@@ -37,14 +32,7 @@ const Home = () => {
 
   return (
     <>
-      <header className="text-center">
-        <h1 className="flex justify-center text-3xl">
-          {month} {dayTokens[0]}
-          <sup className="pt-2 text-base">{dayTokens[1]}</sup>&nbsp;
-          {year}
-        </h1>
-        <p className="mt-2 text-xl">{format(currentTime, 'EEEE')}</p>
-      </header>
+      <ProfileCard />
       <div className="flex flex-1 items-center justify-center">
         <Timer isSaving={isSaving} onSave={handleSaveTimedSession} />
       </div>
