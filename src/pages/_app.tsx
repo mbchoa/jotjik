@@ -17,8 +17,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <TimerProvider>
         <Layout>
           <Component {...pageProps} />
-          <ToastContainer position="bottom-center" autoClose={2000} hideProgressBar closeOnClick />
         </Layout>
+        <ToastContainer position="bottom-center" autoClose={2000} hideProgressBar closeOnClick />
       </TimerProvider>
     </SessionProvider>
   );
