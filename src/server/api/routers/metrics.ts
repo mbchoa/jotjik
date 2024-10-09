@@ -29,7 +29,7 @@ export const metricsRouter = createTRPCRouter({
             SELECT
               session_date,
               DATE_TRUNC('day', CURRENT_TIMESTAMP AT TIME ZONE ${timezone}) - 
-                ROW_NUMBER() OVER (ORDER BY session_date DESC) AS date_group
+                (ROW_NUMBER() OVER (ORDER BY session_date DESC))::INTEGER * INTERVAL '1 day' AS date_group
             FROM
               daily_sessions
             WHERE
