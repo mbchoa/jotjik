@@ -24,7 +24,7 @@ const Timer = ({ isSaving, onSave }: ITimerProps) => {
     <article className="p-4">
       <p className="min-width-[283px] text-center">
         {Object.entries(formatTime(duration)).map(([key, interval]) => (
-          <span className="time-interval text-6xl last:text-gray-400" key={key}>
+          <span className="time-interval text-5xl sm:text-6xl last:text-gray-400" key={key}>
             <SlotCounter
               value={interval.padStart(2, '0')}
               sequentialAnimationMode
