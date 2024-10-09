@@ -54,3 +54,5 @@ terraform.tfstate.backup
 
 # folders
 dump
+
+.aider*
