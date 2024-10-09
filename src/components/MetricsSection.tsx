@@ -10,13 +10,15 @@ function formatTime(hours: number, minutes: number) {
 }
 
 export const MetricsSection = () => {
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   const {
     data: totalTimeForYear,
     isLoading: isLoadingTotalTime,
     isFetched: isFetchedTotalTime,
   } = trpc.metrics.getTotalTimeForYear.useQuery({
     year: new Date().getFullYear(),
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    timezone,
   });
 
   const {
@@ -30,6 +32,12 @@ export const MetricsSection = () => {
     isLoading: isLoadingLongestStreak,
     isFetched: isFetchedLongestStreak,
   } = trpc.metrics.getLongestStreak.useQuery();
+
+  const {
+    data: currentStreak,
+    isLoading: isLoadingCurrentStreak,
+    isFetched: isFetchedCurrentStreak,
+  } = trpc.metrics.getCurrentStreak.useQuery({ timezone });
 
   const totalHh = totalTimeForYear?.totalHours ?? 0;
   const totalMm = totalTimeForYear?.totalMinutes ?? 0;
@@ -55,6 +63,12 @@ export const MetricsSection = () => {
         metric={formatTime(last30DayAvgHh, last30DayAvgMm)}
         isLoading={isLoadingLast30DayAverage}
         hasError={!isFetchedLast30DayAverage && !last30DayAverage}
+      />
+      <MetricCard
+        label="Current Streak"
+        metric={`${currentStreak?.currentStreak ?? 0}`}
+        isLoading={isLoadingCurrentStreak}
+        hasError={!isFetchedCurrentStreak && !currentStreak}
       />
     </div>
   );
