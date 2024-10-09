@@ -1,7 +1,7 @@
-import { format } from 'date-fns';
-import NextImage from 'next/image';
-import { useSession } from 'next-auth/react';
 import { UserCircleIcon } from '@heroicons/react/24/outline';
+import { format } from 'date-fns';
+import { useSession } from 'next-auth/react';
+import NextImage from 'next/image';
 
 const user = {
   name: 'Michael',
@@ -27,7 +27,7 @@ export const ProfileCard = () => {
                 height={80}
               />
             ) : (
-              <UserCircleIcon className="h-20 w-20 text-gray-300 stroke-1" />
+              <UserCircleIcon className="h-20 w-20 text-gray-300 stroke-1 mx-auto" />
             )}
           </div>
           <div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
