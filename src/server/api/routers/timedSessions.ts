@@ -1,6 +1,5 @@
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
 import { Prisma, type TimedSessions } from '@prisma/client';
-import { startOfDay, subDays } from 'date-fns';
 import { z } from 'zod';
 export const timedSessionsRouter = createTRPCRouter({
   getInfiniteTimedSessions: protectedProcedure
@@ -14,37 +13,29 @@ export const timedSessionsRouter = createTRPCRouter({
       const { cursor, timezone } = input;
 
       const sqlQuery = Prisma.sql`
-        WITH distinct_days AS (
-          SELECT DISTINCT
-            date_trunc('day', "startedAt" AT TIME ZONE 'UTC' AT TIME ZONE ${timezone})::DATE AS local_date
-          FROM "TimedSessions"
-          WHERE "userId" = ${ctx.session.user.id}
-          ${cursor ? Prisma.sql`AND "startedAt" < ${new Date(cursor)}` : Prisma.sql``}
+        with local_timezone as (
+          select ("startedAt" at time zone 'utc' at time zone ${timezone})::date as activity_date
+          from "TimedSessions"
+          where "userId" = ${ctx.session.user.id}
+          ${cursor ? Prisma.sql`and "startedAt" < ${cursor}::timestamp` : Prisma.empty}
+          order by "startedAt" desc
         ),
-        ranked_days AS (
-          SELECT 
-            local_date,
-            ROW_NUMBER() OVER (ORDER BY local_date DESC) AS row_num
-          FROM distinct_days
+        deduped_dates AS (
+            SELECT DISTINCT activity_date
+            FROM local_timezone
+            order by activity_date desc
         ),
-        date_range AS (
-          SELECT
-            MIN(local_date) as min_date,
-            MAX(local_date) as max_date
-          FROM ranked_days
-          WHERE row_num <= 7
+        top_7_days AS (
+          SELECT activity_date
+          FROM deduped_dates
+          LIMIT 7
         )
-        SELECT
-          ts.*
-        FROM
-          "TimedSessions" ts
-        JOIN
-          date_range dr ON date_trunc('day', ts."startedAt" AT TIME ZONE 'UTC' AT TIME ZONE ${timezone})::DATE >= dr.min_date
-                        AND date_trunc('day', ts."startedAt" AT TIME ZONE 'UTC' AT TIME ZONE ${timezone})::DATE <= dr.max_date
-        WHERE
-          ts."userId" = ${ctx.session.user.id}
-        ORDER BY
-          ts."startedAt" DESC;
+        select ts.*
+        FROM "TimedSessions" ts
+        JOIN top_7_days t7d
+          ON (ts."startedAt" AT TIME ZONE 'utc' AT TIME ZONE ${timezone})::date = t7d.activity_date
+        WHERE ts."userId" = ${ctx.session.user.id}
+        ORDER BY ts."startedAt" DESC;
       `;
 
       const timedSessions = await ctx.prisma.$queryRaw<TimedSessions[]>(sqlQuery);
@@ -53,8 +44,7 @@ export const timedSessionsRouter = createTRPCRouter({
       if (timedSessions.length > 0) {
         const oldestSession = timedSessions[timedSessions.length - 1];
         if (oldestSession) {
-          const oldestSessionStartTime = oldestSession.startedAt;
-          nextCursor = startOfDay(subDays(oldestSessionStartTime, 1)).toISOString();
+          nextCursor = oldestSession.startedAt.toISOString();
         }
       }
 
