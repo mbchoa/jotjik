@@ -93,19 +93,19 @@ export const metricsRouter = createTRPCRouter({
     }),
   getLast30DaySessionAverage: protectedProcedure.query(async ({ ctx }) => {
     const sqlQuery = Prisma.sql`
-        WITH session_stats AS (
-          SELECT 
-              AVG(duration) AS avg_duration_ms
-          FROM 
-              "TimedSessions"
-          WHERE 
-              "userId" = ${ctx.session.user.id}
-              AND "startedAt" >= CURRENT_DATE - INTERVAL '30 days'
+      WITH session_stats AS (
+        SELECT 
+            AVG(duration) AS avg_duration_ms
+        FROM 
+            "TimedSessions"
+        WHERE 
+            "userId" = ${ctx.session.user.id}
+            AND "startedAt" >= CURRENT_DATE - INTERVAL '30 days'
       )
       SELECT 
-          FLOOR(avg_duration_ms / 3600000) AS avg_hours,
-          FLOOR((avg_duration_ms % 3600000) / 60000) AS avg_minutes,
-          FLOOR((avg_duration_ms % 60000) / 1000) AS avg_seconds
+          FLOOR(avg_duration_ms / 3600000)::INTEGER AS avg_hours,
+          FLOOR((avg_duration_ms % 3600000) / 60000)::INTEGER AS avg_minutes,
+          FLOOR((avg_duration_ms % 60000) / 1000)::INTEGER AS avg_seconds
       FROM 
           session_stats;
       `;
