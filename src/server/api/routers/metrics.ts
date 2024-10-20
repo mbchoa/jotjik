@@ -13,56 +13,46 @@ export const metricsRouter = createTRPCRouter({
       const { timezone } = input;
 
       const sqlQuery = Prisma.sql`
-        WITH daily_sessions AS (
+        WITH user_daily_activity AS (
           SELECT DISTINCT
-            DATE("startedAt" AT TIME ZONE 'UTC' AT TIME ZONE ${timezone}) AS session_date
-          FROM
-            "TimedSessions"
-          WHERE
-            "userId" = ${ctx.session.user.id}
+            ("startedAt" AT TIME ZONE 'UTC' AT TIME ZONE ${timezone})::DATE AS activity_date
+          FROM "TimedSessions"
+          WHERE "userId" = ${ctx.session.user.id}
         ),
-        current_streak AS (
+        user_activity_with_lag AS (
           SELECT
-            MAX(session_date) AS streak_end,
-            COUNT(*) AS streak_length
-          FROM (
-            SELECT
-              session_date,
-              DATE_TRUNC('day', CURRENT_TIMESTAMP AT TIME ZONE ${timezone}) - 
-                (ROW_NUMBER() OVER (ORDER BY session_date DESC))::INTEGER * INTERVAL '1 day' AS date_group
-            FROM
-              daily_sessions
-            WHERE
-              session_date <= DATE_TRUNC('day', CURRENT_TIMESTAMP AT TIME ZONE ${timezone})
-          ) AS consecutive_days
-          WHERE
-            date_group = DATE_TRUNC('day', CURRENT_TIMESTAMP AT TIME ZONE ${timezone})
+            activity_date,
+            LAG(activity_date) OVER (ORDER BY activity_date) AS prev_activity_date
+          FROM user_daily_activity
+        ),
+        user_streak_groups AS (
+          SELECT
+            activity_date,
+            SUM(CASE 
+              WHEN activity_date - prev_activity_date = 1 
+              THEN 0 
+              ELSE 1 
+            END) OVER (ORDER BY activity_date) AS streak_group
+          FROM user_activity_with_lag
+        ),
+        current_date_in_user_timezone AS (
+          SELECT (CURRENT_TIMESTAMP AT TIME ZONE 'UTC' AT TIME ZONE ${timezone})::DATE AS date
         )
         SELECT
-          CASE
-            WHEN EXISTS (
-              SELECT 1 FROM daily_sessions 
-              WHERE session_date = DATE_TRUNC('day', CURRENT_TIMESTAMP AT TIME ZONE ${timezone})
-            ) THEN GREATEST(COALESCE(streak_length, 0), 1)
-            ELSE COALESCE(streak_length, 0)
-          END AS current_streak,
-          CASE
-            WHEN EXISTS (
-              SELECT 1 FROM daily_sessions 
-              WHERE session_date = DATE_TRUNC('day', CURRENT_TIMESTAMP AT TIME ZONE ${timezone})
-            ) THEN DATE_TRUNC('day', CURRENT_TIMESTAMP AT TIME ZONE ${timezone})::DATE
-            ELSE streak_end
-          END AS streak_end
-        FROM current_streak;
+          MAX(activity_date) AS last_activity_date,
+          COUNT(*) AS streak_count
+        FROM user_streak_groups
+        GROUP BY streak_group
+        HAVING MAX(activity_date) = (SELECT MAX(activity_date) FROM user_daily_activity)
+          OR MAX(activity_date) = (SELECT date FROM current_date_in_user_timezone) - 1
+        ORDER BY last_activity_date DESC
+        LIMIT 1;
       `;
 
-      const result = await ctx.prisma.$queryRaw<
-        { current_streak: number; streak_end: Date }[]
-      >(sqlQuery);
+      const result = await ctx.prisma.$queryRaw<{ streak_count: number }[]>(sqlQuery);
 
       return {
-        currentStreak: result[0]?.current_streak ?? 0,
-        streakEnd: result[0]?.streak_end ?? null,
+        currentStreak: result[0]?.streak_count ?? 0,
       };
     }),
   getTotalTimeForYear: protectedProcedure
