@@ -1,6 +1,6 @@
 import { Card } from '@/components/Card';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
-import { Flex, Icon, Metric, ProgressBar, Text } from '@tremor/react';
+import { Flex, Icon, Text } from '@tremor/react';
 
 interface IMetricCardProps {
   label: string;
@@ -16,11 +16,6 @@ export const MetricCard = ({ label, metric, isLoading, hasError = false }: IMetr
         <div className="animate-pulse">
           <div className="h-2.5 w-16 bg-gray-200 rounded-full"></div>
           <div className="h-5 w-24 mt-1 bg-gray-200 rounded-full"></div>
-          <Flex className="mt-4">
-            <div className="h-2.5 w-16 bg-gray-200 rounded-full"></div>
-            <div className="h-2.5 w-24 bg-gray-200 rounded-full"></div>
-          </Flex>
-          <ProgressBar value={33} className="mt-2" />
           <span className="sr-only">Loading...</span>
         </div>
       </Card>
@@ -40,8 +35,8 @@ export const MetricCard = ({ label, metric, isLoading, hasError = false }: IMetr
 
   return (
     <Card>
-      <Text>{label}</Text>
-      <Metric>{metric}</Metric>
+      <h3 className="text-tremor-label text-tremor-content dark:text-dark-tremor-content">{label}</h3> 
+      <p className="text-tremor-base font-semibold text-tremor-content-strong dark:text-dark-tremor-content-strong">{metric}</p>
     </Card>
   );
 };

@@ -3,9 +3,9 @@ import { MetricCard } from './MetricCard';
 
 function formatTime(hours: number, minutes: number) {
   if (hours === 0) {
-    return `${minutes} m`;
+    return `${minutes}m`;
   } else {
-    return `${hours} h ${minutes} m`;
+    return `${hours}h ${minutes}m`;
   }
 }
 
