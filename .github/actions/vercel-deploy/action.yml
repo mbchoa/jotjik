@@ -1,0 +1,33 @@
+name: 'Deploy to Vercel'
+description: 'Deploys the application to Vercel'
+
+inputs:
+  environment:
+    description: 'Environment to deploy to (preview/production)'
+    required: true
+  token:
+    description: 'Vercel token'
+    required: true
+
+outputs:
+  url:
+    description: 'Deployment URL'
+    value: ${{ steps.deploy.outputs.url }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Pull Vercel Environment Information
+      shell: bash
+      run: vercel pull --yes --environment=${{ inputs.environment }} --token=${{ inputs.token }}
+
+    - name: Build Project Artifacts
+      shell: bash
+      run: vercel build ${{ inputs.environment == 'production' && '--prod' || '' }} --token=${{ inputs.token }}
+
+    - name: Deploy Project Artifacts
+      id: deploy
+      shell: bash
+      run: |
+        DEPLOYMENT_URL=$(vercel deploy --prebuilt ${{ inputs.environment == 'production' && '--prod' || '' }} --token=${{ inputs.token }})
+        echo "url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
