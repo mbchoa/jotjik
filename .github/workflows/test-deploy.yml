@@ -1,9 +1,12 @@
 name: Test and Deploy
 on:
   push:
-    branches: [main, dev]
+    branches:
+      - '**' # Matches all branches
   pull_request:
-    branches: [main, dev]
+    branches:
+      - main
+      - dev
 
 env:
   STORE_PATH: .pnpm-store
