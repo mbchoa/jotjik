@@ -5,11 +5,10 @@ export const formatTime = (time: number, showMs = false) => {
   const diffInMin = (diffInHrs - hh) * 60;
   const mm = Math.floor(diffInMin);
 
-  const diffInSec = (diffInMin - mm) * 60;
+  const diffInSec = (time / 1000) % 60;
   const ss = Math.floor(diffInSec);
 
-  const diffInMs = (diffInSec - ss) * 100;
-  const ms = Math.floor(diffInMs);
+  const ms = Math.floor(time % 1000 / 10);
 
   const formattedHH = hh.toString();
   const formattedMM = mm.toString();
