@@ -18,7 +18,7 @@ const AppHeader = () => {
   }, [session, isRunning, startedAt, duration]);
 
   return (
-    <header className="flex bg-pink-900 text-white">
+    <header className="flex bg-pink-900 text-white sticky top-0 z-50">
       <div className="flex flex-1 items-center max-w-screen-lg mx-auto w-full px-4">
         <span className="inline-block text-2xl">
           <Link href="/">
