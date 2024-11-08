@@ -37,16 +37,26 @@ export const metricsRouter = createTRPCRouter({
         ),
         current_date_in_user_timezone AS (
           SELECT (CURRENT_TIMESTAMP AT TIME ZONE 'UTC' AT TIME ZONE ${timezone})::DATE AS date
+        ),
+        latest_activity AS (
+          SELECT MAX(activity_date) as last_date
+          FROM user_daily_activity
+        ),
+        streak_check AS (
+          SELECT
+            MAX(activity_date) AS last_activity_date,
+            COUNT(*) AS streak_count
+          FROM user_streak_groups
+          GROUP BY streak_group
+          HAVING MAX(activity_date) = (SELECT last_date FROM latest_activity)
+          ORDER BY last_activity_date DESC
+          LIMIT 1
         )
         SELECT
-          MAX(activity_date) AS last_activity_date,
-          COUNT(*) AS streak_count
-        FROM user_streak_groups
-        GROUP BY streak_group
-        HAVING MAX(activity_date) = (SELECT MAX(activity_date) FROM user_daily_activity)
-          OR MAX(activity_date) = (SELECT date FROM current_date_in_user_timezone) - 1
-        ORDER BY last_activity_date DESC
-        LIMIT 1;
+          CASE
+            WHEN (SELECT date FROM current_date_in_user_timezone) - (SELECT last_date FROM latest_activity) > 2 THEN 0
+            ELSE COALESCE((SELECT streak_count FROM streak_check), 0)
+          END AS streak_count;
       `;
 
       const result = await ctx.prisma.$queryRaw<{ streak_count: number }[]>(sqlQuery);
