@@ -1,3 +1,4 @@
+import ActivityGraph from '@/components/ActivityGraph';
 import Loader from '@/components/Loader';
 import { MetricsSection } from '@/components/MetricsSection';
 import RecordList from '@/components/RecordList';
@@ -60,6 +61,7 @@ const Sessions = () => {
         </div>
       ) : (
         <div className="space-y-4">
+          <ActivityGraph />
           <MetricsSection />
           <RecordList sessions={data.pages.flatMap((page) => page.timedSessions)} />
         </div>
