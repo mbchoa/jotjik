@@ -48,7 +48,7 @@ const Sessions = () => {
   }, [saveSession, status]);
 
   if (status === 'unauthenticated') {
-    void router.push('/api/auth/signin?callbackUrl=%sessions');
+    void router.push('/api/auth/signin?callbackUrl=%2Fsessions');
     return;
   }
 
