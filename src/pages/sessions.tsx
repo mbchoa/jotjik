@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
 import type { Session } from 'types';
 
-const Stats = () => {
+const Sessions = () => {
   const router = useRouter();
   const { status } = useSession();
   const { data, isLoading, refetch, hasNextPage, fetchNextPage, isFetchingNextPage } =
@@ -48,7 +48,7 @@ const Stats = () => {
   }, [saveSession, status]);
 
   if (status === 'unauthenticated') {
-    void router.push('/api/auth/signin?callbackUrl=%2Fstats');
+    void router.push('/api/auth/signin?callbackUrl=%2Fsessions');
     return;
   }
 
@@ -76,4 +76,4 @@ const Stats = () => {
   );
 };
 
-export default Stats;
+export default Sessions;
