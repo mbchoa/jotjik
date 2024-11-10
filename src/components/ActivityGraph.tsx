@@ -1,25 +1,83 @@
 import { trpc } from '@/utils/api';
+import { RiArrowLeftSLine, RiArrowRightSLine } from '@remixicon/react';
+import { useEffect, useMemo, useState } from 'react';
 import { Card } from './Card';
 
 export default function ActivityGraph() {
   const currentDate = new Date();
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth() + 1;
+  const [viewDate, setViewDate] = useState(currentDate);
+  
+  const year = viewDate.getFullYear();
+  const month = viewDate.getMonth() + 1;
+  
+  // Calculate if we're viewing the current month
+  const isCurrentMonth = currentDate.getMonth() === viewDate.getMonth() && 
+                        currentDate.getFullYear() === viewDate.getFullYear();
 
+  // Get previous month for prefetching
+  const prevDate = useMemo(() => {
+    const date = new Date(viewDate);
+    date.setMonth(date.getMonth() - 1);
+    return date;
+  }, [viewDate]);
+  
   const { data: monthData, isLoading } = trpc.timedSessions.getTimedSessionsForMonth.useQuery({
     year,
     month,
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   });
 
+  // Prefetch previous month
+  const utils = trpc.useContext();
+  useEffect(() => {
+    void utils.timedSessions.getTimedSessionsForMonth.prefetch({
+      year: prevDate.getFullYear(),
+      month: prevDate.getMonth() + 1,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    });
+  }, [utils, prevDate]);
+
   const monthYearString = new Intl.DateTimeFormat('en-US', {
     month: 'long',
     year: 'numeric'
-  }).format(currentDate);
+  }).format(viewDate);
+
+  const handlePrevMonth = () => {
+    const newDate = new Date(viewDate);
+    newDate.setMonth(newDate.getMonth() - 1);
+    setViewDate(newDate);
+  };
+
+  const handleNextMonth = () => {
+    if (!isCurrentMonth) {
+      const newDate = new Date(viewDate);
+      newDate.setMonth(newDate.getMonth() + 1);
+      setViewDate(newDate);
+    }
+  };
 
   return (
     <Card>
-      <h2 className="text-lg font-semibold mb-4 text-center">{monthYearString}</h2>
+      <div className="flex items-center justify-between space-between gap-4 mb-4">
+        <button
+          onClick={handlePrevMonth}
+          className="p-1 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-800"
+        >
+          <RiArrowLeftSLine className="size-6" />
+        </button>
+        <h2 className="text-lg font-semibold">{monthYearString}</h2>
+        <button
+          onClick={handleNextMonth}
+          disabled={isCurrentMonth}
+          className={`p-1 rounded-lg ${
+            isCurrentMonth 
+              ? 'opacity-50 cursor-not-allowed' 
+              : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+          }`}
+        >
+          <RiArrowRightSLine className="size-6" />
+        </button>
+      </div>
       <div className="space-y-1">
         <div className="grid grid-cols-7 gap-1 text-xs text-gray-500 mb-1">
           {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
@@ -36,7 +94,7 @@ export default function ActivityGraph() {
               />
             ))
           ) : (
-            monthData?.map((day) => {
+            monthData?.map((day: { date: string | number | Date; activityLevel: number; }) => {
               const date = new Date(day.date);
               const isCurrentMonth = date.getMonth() + 1 === month;
               
