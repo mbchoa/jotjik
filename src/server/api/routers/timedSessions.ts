@@ -17,7 +17,7 @@ export const timedSessionsRouter = createTRPCRouter({
           select ("startedAt" at time zone 'utc' at time zone ${timezone})::date as activity_date
           from "TimedSessions"
           where "userId" = ${ctx.session.user.id}
-          ${cursor ? Prisma.sql`and "startedAt" < ${cursor}::timestamp` : Prisma.empty}
+          ${cursor ? Prisma.sql`and "startedAt" < ${cursor}::timestamptz` : Prisma.empty}
           order by "startedAt" desc
         ),
         deduped_dates AS (
@@ -63,6 +63,69 @@ export const timedSessionsRouter = createTRPCRouter({
       },
     });
   }),
+  getTimedSessionsForMonth: protectedProcedure
+    .input(
+      z.object({
+        year: z.number(),
+        month: z.number(),
+        timezone: z.string(),
+      })
+    )
+    .output(
+      z.array(
+        z.object({
+          date: z.date(),
+          activityLevel: z.number(),
+        })
+      )
+    )
+    .query(async ({ input, ctx }) => {
+      const { year, month, timezone } = input;
+
+      const sqlQuery = Prisma.sql`
+        with calendar_dates as (
+          select generate_series(
+            (make_date(${year}::integer, ${month}::integer, 1) - 
+             (extract(dow from make_date(${year}::integer, ${month}::integer, 1)) || ' days')::interval)::date,
+            (date_trunc('month', make_date(${year}::integer, ${month}::integer, 1) + interval '1 month') + 
+             (6 - extract(dow from (date_trunc('month', make_date(${year}::integer, ${month}::integer, 1) + interval '1 month' - interval '1 day'))) || ' days')::interval)::date,
+            interval '1 day'
+          )::date as activity_date
+        )
+        select
+          md.activity_date,
+          case 
+            when extract(month from md.activity_date) = ${month}::integer 
+            then coalesce(sum(ts.duration)::bigint, 0)
+            else 0
+          end as total_duration
+        from calendar_dates md
+        left join "TimedSessions" ts
+          on (ts."startedAt" at time zone 'utc' at time zone ${timezone})::date = md.activity_date
+          and ts."userId" = ${ctx.session.user.id}
+        group by md.activity_date
+        order by md.activity_date;
+      `;
+
+      const result = await ctx.prisma.$queryRaw<{ activity_date: Date; total_duration: bigint }[]>(
+        sqlQuery
+      );
+
+      return result.map(({ activity_date, total_duration }) => {
+        let activityLevel;
+        const durationInMinutes = Number(total_duration) / (60 * 1000); // Convert BigInt to number, then ms to minutes
+        if (durationInMinutes === 0) activityLevel = 0;
+        else if (durationInMinutes <= 15) activityLevel = 1;  // 15 minutes
+        else if (durationInMinutes <= 30) activityLevel = 2;  // 30 minutes
+        else if (durationInMinutes <= 60) activityLevel = 3;  // 60 minutes
+        else activityLevel = 4;  // more than 60 minutes
+
+        return {
+          date: activity_date,
+          activityLevel,
+        };
+      });
+    }),
   saveTimedSession: protectedProcedure
     .input(
       z.object({
