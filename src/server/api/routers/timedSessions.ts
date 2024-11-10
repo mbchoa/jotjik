@@ -17,7 +17,7 @@ export const timedSessionsRouter = createTRPCRouter({
           select ("startedAt" at time zone 'utc' at time zone ${timezone})::date as activity_date
           from "TimedSessions"
           where "userId" = ${ctx.session.user.id}
-          ${cursor ? Prisma.sql`and "startedAt" < ${cursor}::timestamp` : Prisma.empty}
+          ${cursor ? Prisma.sql`and "startedAt" < ${cursor}::timestamptz` : Prisma.empty}
           order by "startedAt" desc
         ),
         deduped_dates AS (
@@ -86,9 +86,9 @@ export const timedSessionsRouter = createTRPCRouter({
         with calendar_dates as (
           select generate_series(
             (make_date(${year}::integer, ${month}::integer, 1) - 
-             ((extract(dow from make_date(${year}::integer, ${month}::integer, 1))::integer) || ' days')::interval)::date,
-            (make_date(${year}::integer, ${month}::integer + 1, 1) + 
-             (6 - extract(dow from (make_date(${year}::integer, ${month}::integer + 1, 1) - interval '1 day'))::integer || ' days')::interval)::date,
+             (extract(dow from make_date(${year}::integer, ${month}::integer, 1)) || ' days')::interval)::date,
+            (date_trunc('month', make_date(${year}::integer, ${month}::integer, 1) + interval '1 month') + 
+             (6 - extract(dow from (date_trunc('month', make_date(${year}::integer, ${month}::integer, 1) + interval '1 month' - interval '1 day'))) || ' days')::interval)::date,
             interval '1 day'
           )::date as activity_date
         )
