@@ -27,14 +27,26 @@ export default function ActivityGraph() {
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   });
 
-  // Prefetch previous month
+  // Prefetch previous month during idle time
   const utils = trpc.useContext();
   useEffect(() => {
-    void utils.timedSessions.getTimedSessionsForMonth.prefetch({
-      year: prevDate.getFullYear(),
-      month: prevDate.getMonth() + 1,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    });
+    const prefetchData = () => {
+      void utils.timedSessions.getTimedSessionsForMonth.prefetch({
+        year: prevDate.getFullYear(),
+        month: prevDate.getMonth() + 1,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      });
+    };
+
+    // Use requestIdleCallback with fallback for browsers that don't support it
+    const idleCallback = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+    const handle = idleCallback(prefetchData);
+
+    return () => {
+      // Use cancelIdleCallback with fallback
+      const cancelIdle = window.cancelIdleCallback || clearTimeout;
+      cancelIdle(handle);
+    };
   }, [utils, prevDate]);
 
   const monthYearString = new Intl.DateTimeFormat('en-US', {
