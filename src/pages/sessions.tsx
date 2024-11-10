@@ -61,8 +61,8 @@ const Sessions = () => {
         </div>
       ) : (
         <div className="space-y-4">
-          <ActivityGraph />
           <MetricsSection />
+          <ActivityGraph />
           <RecordList sessions={data.pages.flatMap((page) => page.timedSessions)} />
         </div>
       )}
