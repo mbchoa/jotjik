@@ -48,12 +48,9 @@ const useFooterAwareFAB = () => {
 
 const Sessions = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const handleSubmit = (startedAt: string, duration: number) => {
-    // TODO: Call mutation to save session
-    setIsOpen(false);
-  };
   const router = useRouter();
   const { status } = useSession();
+
   const { data, isLoading, refetch, hasNextPage, fetchNextPage, isFetchingNextPage } =
     trpc.timedSessions.getInfiniteTimedSessions.useInfiniteQuery(
       {
@@ -71,6 +68,19 @@ const Sessions = () => {
         await refetch();
       },
     });
+
+  const handleSubmit = async (startedAt: string, duration: number) => {
+    try {
+      await saveSession({
+        startedAt,
+        duration,
+      });
+      setIsOpen(false);
+    } catch (error) {
+      console.error('Failed to save session:', error);
+    }
+  };
+
   const { resumeFromLocalStorage } = useContext(TimerContext);
   const bottomOffset = useFooterAwareFAB();
   useEffect(() => {
