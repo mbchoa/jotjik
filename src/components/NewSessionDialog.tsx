@@ -1,4 +1,5 @@
 import { Dialog, DialogPanel } from '@tremor/react';
+import { format } from 'date-fns';
 import { useState } from 'react';
 
 interface NewSessionDialogProps {
@@ -8,14 +9,14 @@ interface NewSessionDialogProps {
 }
 
 const NewSessionDialog = ({ isOpen, onClose, onSubmit }: NewSessionDialogProps) => {
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
+  const [selectedDateTime, setSelectedDateTime] = useState<Date | undefined>(undefined);
   const [hours, setHours] = useState('0');
   const [minutes, setMinutes] = useState('0');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const startedAt = new Date(`${date}T${time}`).toISOString();
+    if (!selectedDateTime) return;
+    const startedAt = selectedDateTime.toISOString();
     const duration = (parseInt(hours) * 60 + parseInt(minutes)) * 60 * 1000;
     onSubmit(startedAt, duration);
     onClose();
@@ -30,30 +31,46 @@ const NewSessionDialog = ({ isOpen, onClose, onSubmit }: NewSessionDialogProps) 
           </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="date" className="block text-sm font-medium text-gray-700">
-                Date
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Date and Time
               </label>
-              <input
-                type="date"
-                id="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500"
-                required
-              />
-            </div>
-            <div>
-              <label htmlFor="time" className="block text-sm font-medium text-gray-700">
-                Time
-              </label>
-              <input
-                type="time"
-                id="time"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500"
-                required
-              />
+              <div className="flex flex-col space-y-2">
+                <Calendar
+                  mode="single"
+                  selected={selectedDateTime}
+                  onSelect={(date) => {
+                    if (date) {
+                      // If we already have a time, preserve it
+                      if (selectedDateTime) {
+                        date = setHours(date, selectedDateTime.getHours());
+                        date = setMinutes(date, selectedDateTime.getMinutes());
+                      } else {
+                        // Default to current time
+                        const now = new Date();
+                        date = setHours(date, now.getHours());
+                        date = setMinutes(date, now.getMinutes());
+                      }
+                    }
+                    setSelectedDateTime(date);
+                  }}
+                  className="rounded-md border border-gray-300"
+                  required
+                />
+                <input
+                  type="time"
+                  value={selectedDateTime ? format(selectedDateTime, 'HH:mm') : ''}
+                  onChange={(e) => {
+                    if (selectedDateTime && e.target.value) {
+                      const [hours, minutes] = e.target.value.split(':').map(Number);
+                      let newDateTime = setHours(selectedDateTime, hours);
+                      newDateTime = setMinutes(newDateTime, minutes);
+                      setSelectedDateTime(newDateTime);
+                    }
+                  }}
+                  className="w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500"
+                  required
+                />
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -96,7 +113,8 @@ const NewSessionDialog = ({ isOpen, onClose, onSubmit }: NewSessionDialogProps) 
               </button>
               <button
                 type="submit"
-                className="rounded-md bg-pink-900 px-4 py-2 text-sm font-medium text-white hover:bg-pink-800 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
+                disabled={!selectedDateTime}
+                className="rounded-md bg-pink-900 px-4 py-2 text-sm font-medium text-white hover:bg-pink-800 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Add Session
               </button>
