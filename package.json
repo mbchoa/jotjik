@@ -21,7 +21,7 @@
     "@remixicon/react": "^4.5.0",
     "@t3-oss/env-nextjs": "^0.7.1",
     "@tanstack/react-query": "^4.36.1",
-    "@tremor/react": "^3.12.1",
+    "@tremor/react": "^3.18.4",
     "@trpc/client": "^10.44.1",
     "@trpc/next": "^10.44.1",
     "@trpc/react-query": "^10.44.1",
