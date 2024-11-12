@@ -1,5 +1,5 @@
-import { Dialog, DialogPanel } from '@tremor/react';
-import { format } from 'date-fns';
+import { DatePicker } from '@/components/Tremor/DatePicker';
+import { Dialog, DialogPanel, TextInput } from '@tremor/react';
 import { useState } from 'react';
 
 interface NewSessionDialogProps {
@@ -25,80 +25,50 @@ const NewSessionDialog = ({ isOpen, onClose, onSubmit }: NewSessionDialogProps) 
   return (
     <Dialog open={isOpen} onClose={onClose} static={true}>
       <DialogPanel>
-        <div className="p-6">
           <h3 className="text-lg font-medium leading-6 text-gray-900 mb-4">
-            Add Session Manually
+            Add Session
           </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Date and Time
+                Date
               </label>
-              <div className="flex flex-col space-y-2">
-                <Calendar
-                  mode="single"
-                  selected={selectedDateTime}
-                  onSelect={(date) => {
-                    if (date) {
-                      // If we already have a time, preserve it
-                      if (selectedDateTime) {
-                        date = setHours(date, selectedDateTime.getHours());
-                        date = setMinutes(date, selectedDateTime.getMinutes());
-                      } else {
-                        // Default to current time
-                        const now = new Date();
-                        date = setHours(date, now.getHours());
-                        date = setMinutes(date, now.getMinutes());
-                      }
-                    }
-                    setSelectedDateTime(date);
-                  }}
-                  className="rounded-md border border-gray-300"
-                  required
-                />
-                <input
-                  type="time"
-                  value={selectedDateTime ? format(selectedDateTime, 'HH:mm') : ''}
-                  onChange={(e) => {
-                    if (selectedDateTime && e.target.value) {
-                      const [hours, minutes] = e.target.value.split(':').map(Number);
-                      let newDateTime = setHours(selectedDateTime, hours);
-                      newDateTime = setMinutes(newDateTime, minutes);
-                      setSelectedDateTime(newDateTime);
-                    }
-                  }}
-                  className="w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500"
+              <div>
+                <DatePicker
+                  value={selectedDateTime}
+                  onChange={(date) => setSelectedDateTime(date)}
+                  className="w-full"
+                  toDate={new Date()}
+                  showTimePicker
                   required
                 />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="hours" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="hours" className="block text-sm font-medium text-gray-700 mb-2">
                   Hours
                 </label>
-                <input
+                <TextInput
                   type="number"
                   id="hours"
-                  min="0"
+                  min={0}
                   value={hours}
                   onChange={(e) => setHours(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500"
                   required
                 />
               </div>
               <div>
-                <label htmlFor="minutes" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="minutes" className="block text-sm font-medium text-gray-700 mb-2">
                   Minutes
                 </label>
-                <input
+                <TextInput
                   type="number"
                   id="minutes"
-                  min="0"
-                  max="59"
+                  min={0}
+                  max={59}
                   value={minutes}
                   onChange={(e) => setMinutes(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500"
                   required
                 />
               </div>
@@ -120,7 +90,6 @@ const NewSessionDialog = ({ isOpen, onClose, onSubmit }: NewSessionDialogProps) 
               </button>
             </div>
           </form>
-        </div>
       </DialogPanel>
     </Dialog>
   );
