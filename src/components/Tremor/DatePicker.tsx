@@ -1042,13 +1042,13 @@ const validatePresets = (
 
         if (fromYear && presetYear < fromYear) {
           throw new Error(
-            `Preset ${preset.label} is before fromYear ${fromYearToUse}.`,
+            `Preset ${preset.label} is before fromYear ${String(fromYearToUse)}.`,
           )
         }
 
         if (toYear && presetYear > toYear) {
           throw new Error(
-            `Preset ${preset.label} is after toYear ${toYearToUse}.`,
+            `Preset ${preset.label} is after toYear ${String(toYearToUse)}.`,
           )
         }
 
@@ -1057,7 +1057,7 @@ const validatePresets = (
 
           if (presetMonth < fromMonth.getMonth()) {
             throw new Error(
-              `Preset ${preset.label} is before fromMonth ${fromMonth}.`,
+              `Preset ${preset.label} is before fromMonth ${format(fromMonth, 'MMM yyyy')}.`,
             )
           }
         }
@@ -1067,7 +1067,7 @@ const validatePresets = (
 
           if (presetMonth > toMonth.getMonth()) {
             throw new Error(
-              `Preset ${preset.label} is after toMonth ${toMonth}.`,
+              `Preset ${preset.label} is after toMonth ${format(toMonth, 'MMM yyyy')}.`,
             )
           }
         }
@@ -1077,7 +1077,7 @@ const validatePresets = (
 
           if (presetDay < fromDay.getDate()) {
             throw new Error(
-              `Preset ${preset.label} is before fromDay ${fromDay}.`,
+              `Preset ${preset.label} is before fromDay ${format(fromDay, 'MMM dd, yyyy')}.`,
             )
           }
         }
@@ -1102,13 +1102,13 @@ const validatePresets = (
 
         if (presetFromYear && fromYear && presetFromYear < fromYear) {
           throw new Error(
-            `Preset ${preset.label}'s 'from' is before fromYear ${fromYearToUse}.`,
+            `Preset ${preset.label}'s 'from' is before fromYear ${String(fromYearToUse)}.`,
           )
         }
 
         if (presetToYear && toYear && presetToYear > toYear) {
           throw new Error(
-            `Preset ${preset.label}'s 'to' is after toYear ${toYearToUse}.`,
+            `Preset ${preset.label}'s 'to' is after toYear ${String(toYearToUse)}.`,
           )
         }
 
@@ -1143,9 +1143,7 @@ const validatePresets = (
 
           if (presetDay && presetDay < fromDay.getDate()) {
             throw new Error(
-              `Preset ${
-                preset.dateRange.from
-              }'s 'from' is before fromDay ${format(fromDay, "MMM dd, yyyy")}.`,
+              `Preset ${preset.label}'s 'from' is before fromDay ${format(fromDay, "MMM dd, yyyy")}.`,
             )
           }
         }
