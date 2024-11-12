@@ -1,6 +1,6 @@
 // Tremor Drawer [v0.0.1]
 
-import { Button } from "@/components/Buttons/TremorButton"
+import { Button } from "@/components/Tremor/Button"
 import { cx, focusRing } from "@/lib/utils"
 import * as DrawerPrimitives from "@radix-ui/react-dialog"
 import { RiCloseLine } from "@remixicon/react"

@@ -21,5 +21,21 @@ const config = {
   images: {
     domains: ['lh3.googleusercontent.com'],
   },
+  experimental: {
+    esmExternals: 'loose',
+  },
+  transpilePackages: [
+    'react-day-picker',
+    'date-fns',
+    '@internationalized/date'
+  ],
+  webpack: (config) => {
+    // This is necessary to properly handle ESM packages
+    config.resolve.extensionAlias = {
+      '.js': ['.js', '.ts', '.tsx']
+    }
+    
+    return config
+  }
 };
 export default config;
