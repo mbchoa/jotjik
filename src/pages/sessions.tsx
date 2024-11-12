@@ -45,43 +45,6 @@ const useFooterAwareFAB = () => {
   return bottomOffset;
 };
 
-const useIntersectionObserver = (elementId: string, enabled = true) => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    if (!enabled) return;
-
-    const checkElement = () => {
-      const element = document.getElementById(elementId);
-      if (element) {
-        const observer = new IntersectionObserver(
-          ([entry]) => {
-            if (entry) {
-              setIsVisible(entry.isIntersecting);
-            }
-          },
-          { threshold: 0.1 }
-        );
-
-        observer.observe(element);
-        return () => observer.disconnect();
-      }
-    };
-
-    // Initial check
-    const initialCheck = checkElement();
-    
-    // Re-check after a short delay to ensure element is mounted
-    const timeoutId = setTimeout(checkElement, 100);
-
-    return () => {
-      if (initialCheck) initialCheck();
-      clearTimeout(timeoutId);
-    };
-  }, [elementId, enabled]);
-
-  return isVisible;
-};
 
 const Sessions = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -109,7 +72,6 @@ const Sessions = () => {
       },
     });
   const { resumeFromLocalStorage } = useContext(TimerContext);
-  const isVisible = useIntersectionObserver('record-0', !isLoading);
   const bottomOffset = useFooterAwareFAB();
   useEffect(() => {
     if (status === 'authenticated' && localStorage.getItem('preAuthTimerProgress')) {
@@ -146,9 +108,7 @@ const Sessions = () => {
           <RecordList sessions={data.pages.flatMap((page) => page.timedSessions)} />
           <div
             style={{ bottom: `${bottomOffset}px` }}
-            className={`fixed right-6 z-50 transition-opacity duration-300 ${
-              isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
-            }`}
+            className="fixed right-6 z-50"
           >
             <button
               onClick={() => setIsOpen(true)}
