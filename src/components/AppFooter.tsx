@@ -1,5 +1,5 @@
 const AppFooter: React.FC = () => (
-  <footer className="flex justify-center items-end bg-pink-900 py-4 text-white relative">
+  <footer className="flex justify-center items-end bg-pink-900 py-4 text-white relative h-24">
     <a
       className="absolute inset-0 w-full h-full"
       href="https://github.com/mbchoa"

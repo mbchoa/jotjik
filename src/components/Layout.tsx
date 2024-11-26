@@ -8,7 +8,7 @@ interface ILayoutProps {
 }
 
 const Layout = ({ children }: ILayoutProps) => (
-  <div className="grid-rows-hamburger grid h-screen">
+  <div className="flex min-h-screen flex-col">
     <Head>
       <title>jotjik | Track your sessions</title>
       <meta name="description" content="Time tracking PWA" />
@@ -29,7 +29,7 @@ const Layout = ({ children }: ILayoutProps) => (
       <meta property="og:image" content="https://jotjik.vercel.app/alarm-clock.png" />
     </Head>
     <AppHeader />
-    <main className="flex max-w-screen-lg mx-auto w-full select-none flex-col p-4">{children}</main>
+    <main className="flex max-w-screen-lg mx-auto w-full select-none flex-col p-4 flex-1">{children}</main>
     <AppFooter />
   </div>
 );

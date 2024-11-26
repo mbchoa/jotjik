@@ -31,7 +31,7 @@ const Home = () => {
   );
 
   return (
-    <div className="flex flex-col w-full gap-y-4 h-full">
+    <div className="flex flex-col w-full gap-y-4 h-full flex-1">
       <ProfileCard />
       <div className="flex flex-1 items-center justify-center rounded-lg shadow">
         <Timer isSaving={isSaving} onSave={handleSaveTimedSession} />

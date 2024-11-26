@@ -52,9 +52,6 @@ export default {
         slideRightAndFade:
           "slideRightAndFade 150ms cubic-bezier(0.16, 1, 0.3, 1)",
       },
-      gridTemplateRows: {
-        hamburger: '48px auto 96px',
-      },
       transitionProperty: {
         'max-height': 'max-height',
       },
