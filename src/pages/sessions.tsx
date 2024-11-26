@@ -109,9 +109,9 @@ const Sessions = () => {
   }
 
   return (
-    <section className="h-full">
+    <section className="flex flex-col flex-1">
       {status !== 'authenticated' || isLoading || isSaving || !data || !data.pages[0] ? (
-        <div className="flex h-full items-center justify-center">
+        <div className="flex flex-1 items-center justify-center">
           <Loader className="h-10 w-10 text-pink-900" />
         </div>
       ) : (
@@ -140,21 +140,21 @@ const Sessions = () => {
               </svg>
             </button>
           </div>
+          {hasNextPage && (
+            <div className="mt-4 flex justify-center">
+              <button
+                className="px-4 py-2 rounded-md bg-pink-900 text-white"
+                onClick={() => fetchNextPage()}
+              >
+                {isFetchingNextPage ? <Loader className="h-5 w-5" /> : 'Load More'}
+              </button>
+            </div>
+          )}
           <NewSessionDialog
-              isOpen={isOpen}
-              onClose={() => setIsOpen(false)}
-              onSubmit={handleSubmit}
-            />
-        </div>
-      )}
-      {hasNextPage && (
-        <div className="mt-4 flex justify-center">
-          <button
-            className="px-4 py-2 rounded-md bg-pink-900 text-white"
-            onClick={() => fetchNextPage()}
-          >
-            {isFetchingNextPage ? <Loader className="h-5 w-5" /> : 'Load More'}
-          </button>
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            onSubmit={handleSubmit}
+          />
         </div>
       )}
     </section>
