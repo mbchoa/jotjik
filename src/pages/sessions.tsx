@@ -10,11 +10,14 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import type { Session } from 'types';
 
-const useFooterAwareFAB = () => {
+const useFooterAwareFAB = (isLoading: boolean) => {
   const [bottomOffset, setBottomOffset] = useState(24); // Default bottom-24
 
   useEffect(() => {
     const updatePosition = () => {
+      if (isLoading) {
+        return;
+      }
       const footer = document.querySelector('footer');
       if (footer) {
         const footerRect = footer.getBoundingClientRect();
@@ -40,7 +43,7 @@ const useFooterAwareFAB = () => {
       window.removeEventListener('scroll', updatePosition);
       window.removeEventListener('resize', updatePosition);
     };
-  }, []);
+  }, [isLoading]);
 
   return bottomOffset;
 };
@@ -82,7 +85,7 @@ const Sessions = () => {
   };
 
   const { resumeFromLocalStorage } = useContext(TimerContext);
-  const bottomOffset = useFooterAwareFAB();
+  const bottomOffset = useFooterAwareFAB(isLoading);
   useEffect(() => {
     if (status === 'authenticated' && localStorage.getItem('preAuthTimerProgress')) {
       resumeFromLocalStorage();
