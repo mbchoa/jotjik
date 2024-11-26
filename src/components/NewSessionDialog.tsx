@@ -50,6 +50,7 @@ const NewSessionDialog = ({ isOpen, onClose, onSubmit }: NewSessionDialogProps) 
                   Hours
                 </label>
                 <TextInput
+                  className="min-w-fit"
                   type="number"
                   id="hours"
                   min={0}
@@ -63,6 +64,7 @@ const NewSessionDialog = ({ isOpen, onClose, onSubmit }: NewSessionDialogProps) 
                   Minutes
                 </label>
                 <TextInput
+                  className="min-w-fit"
                   type="number"
                   id="minutes"
                   min={0}
