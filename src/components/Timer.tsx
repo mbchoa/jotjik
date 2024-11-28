@@ -1,7 +1,6 @@
 import { TimerContext } from '@/contexts/TimerContext';
-import { formatTime } from '@/utils/formatTime';
 import { useContext } from 'react';
-import SlotCounter from 'react-slot-counter';
+import TimeDisplay from './TimeDisplay';
 import PauseButton from './Buttons/Pause';
 import PlayButton from './Buttons/Play';
 import ResetButton from './Buttons/Reset';
@@ -21,19 +20,11 @@ const Timer = ({ isSaving, onSave }: ITimerProps) => {
   };
 
   return (
-    <article className="p-4">
-      <p className="min-width-[283px] text-center">
-        {Object.entries(formatTime(duration)).map(([key, interval]) => (
-          <span className="time-interval text-5xl sm:text-6xl last:text-gray-400" key={key}>
-            <SlotCounter
-              value={interval.padStart(2, '0')}
-              sequentialAnimationMode
-              autoAnimationStart={false}
-            />
-          </span>
-        ))}
+    <div className="p-4 flex flex-col flex-1">
+      <p className="min-width-[283px] text-center my-auto">
+        <TimeDisplay duration={duration} />
       </p>
-      <ul className="mt-24 flex gap-x-4 justify-center">
+      <ul className="flex gap-x-4 mt-auto">
         <li>
           {isRunning ? (
             <PauseButton disabled={isSaving} onClick={pause} />
@@ -52,7 +43,7 @@ const Timer = ({ isSaving, onSave }: ITimerProps) => {
           />
         </li>
       </ul>
-    </article>
+    </div>
   );
 };
 

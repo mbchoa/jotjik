@@ -2,6 +2,8 @@ import Head from 'next/head';
 
 import AppFooter from '@/components/AppFooter';
 import AppHeader from '@/components/AppHeader';
+import StickyTimer from './StickyTimer';
+import { useRouter } from 'next/router';
 
 interface ILayoutProps {
   children: React.ReactNode;
@@ -29,6 +31,7 @@ const Layout = ({ children }: ILayoutProps) => (
       <meta property="og:image" content="https://jotjik.vercel.app/alarm-clock.png" />
     </Head>
     <AppHeader />
+    {useRouter().pathname !== '/' && <StickyTimer />}
     <main className="flex max-w-screen-lg mx-auto w-full select-none flex-col p-4 flex-1">{children}</main>
     <AppFooter />
   </div>
